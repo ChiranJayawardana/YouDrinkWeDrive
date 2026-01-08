@@ -88,17 +88,37 @@ Class Users extends DBConnection {
 			if(!in_array($type,$allowed)){
 				$resp['msg'].=" But Image failed to upload due to invalid file type.";
 			}else{
-				$new_height = 200; 
-				$new_width = 200; 
-		
-				list($width, $height) = getimagesize($upload);
-				$t_image = imagecreatetruecolor($new_width, $new_height);
-				imagealphablending( $t_image, false );
-				imagesavealpha( $t_image, true );
-				$gdImg = ($type == 'image/png')? imagecreatefrompng($upload) : imagecreatefromjpeg($upload);
-				imagecopyresampled($t_image, $gdImg, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-				
-				if($gdImg){
+				// Check if GD library is available
+				if(function_exists('imagecreatetruecolor') && function_exists('imagecreatefrompng') && function_exists('imagecreatefromjpeg')){
+					// Use GD library for image resizing
+					$new_height = 200; 
+					$new_width = 200; 
+			
+					list($width, $height) = getimagesize($upload);
+					$t_image = imagecreatetruecolor($new_width, $new_height);
+					imagealphablending( $t_image, false );
+					imagesavealpha( $t_image, true );
+					$gdImg = ($type == 'image/png')? imagecreatefrompng($upload) : imagecreatefromjpeg($upload);
+					if($gdImg){
+						imagecopyresampled($t_image, $gdImg, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+						
+						// Delete old admin image before uploading new one
+						$old_avatar = $this->conn->query("SELECT avatar FROM users where id = '{$id}'")->fetch_array();
+						if($old_avatar && isset($old_avatar['avatar'])){
+							$old_path = base_app.explode('?',$old_avatar['avatar'])[0];
+							if(is_file($old_path)){
+								unlink($old_path);
+							}
+						}
+						
+						$uploaded_img = imagepng($t_image,$dir_path);
+						imagedestroy($gdImg);
+						imagedestroy($t_image);
+					}else{
+						$resp['msg'].=" But Image failed to upload due to unkown reason.";
+					}
+				}else{
+					// Fallback: Save file directly without resizing (GD library not available)
 					// Delete old admin image before uploading new one
 					$old_avatar = $this->conn->query("SELECT avatar FROM users where id = '{$id}'")->fetch_array();
 					if($old_avatar && isset($old_avatar['avatar'])){
@@ -108,15 +128,19 @@ Class Users extends DBConnection {
 						}
 					}
 					
-					$uploaded_img = imagepng($t_image,$dir_path);
-					imagedestroy($gdImg);
-					imagedestroy($t_image);
-				}else{
-					$resp['msg'].=" But Image failed to upload due to unkown reason.";
+					// Determine file extension based on mime type
+					$ext = ($type == 'image/png') ? 'png' : 'jpg';
+					$fname = 'uploads/admin/admin-'.$id.'-'.time().'.'.$ext;
+					$dir_path = base_app. $fname;
+					if(move_uploaded_file($upload, $dir_path)){
+						$uploaded_img = true;
+					}else{
+						$resp['msg'].=" But Image failed to upload due to unkown reason.";
+					}
 				}
 			}
 			
-			if(isset($uploaded_img)){
+			if(isset($uploaded_img) && $uploaded_img){
 				$this->conn->query("UPDATE users set `avatar` = CONCAT('{$fname}','?v=',unix_timestamp(CURRENT_TIMESTAMP)) where id = '{$id}' ");
 				if($id == $this->settings->userdata('id')){
 					$this->settings->set_userdata('avatar',$fname);
@@ -203,7 +227,7 @@ Class Users extends DBConnection {
 				}
 				if(isset($_FILES['img']) && $_FILES['img']['tmp_name'] != ''){
 					if(!is_dir(base_app."uploads/clients/"))
-						mkdir(base_app."uploads/clients/");
+						mkdir(base_app."uploads/clients/", 0777, true);
 					$fname = 'uploads/clients/'.$uid.'.png';
 					$dir_path =base_app. $fname;
 					$upload = $_FILES['img']['tmp_name'];
@@ -212,26 +236,43 @@ Class Users extends DBConnection {
 					if(!in_array($type,$allowed)){
 						$resp['msg'].=" But Image failed to upload due to invalid file type.";
 					}else{
-						$new_height = 200; 
-						$new_width = 200; 
-				
-						list($width, $height) = getimagesize($upload);
-						$t_image = imagecreatetruecolor($new_width, $new_height);
-						imagealphablending( $t_image, false );
-						imagesavealpha( $t_image, true );
-						$gdImg = ($type == 'image/png')? imagecreatefrompng($upload) : imagecreatefromjpeg($upload);
-						imagecopyresampled($t_image, $gdImg, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-						if($gdImg){
+						// Check if GD library is available
+						if(function_exists('imagecreatetruecolor') && function_exists('imagecreatefrompng') && function_exists('imagecreatefromjpeg')){
+							// Use GD library for image resizing
+							$new_height = 200; 
+							$new_width = 200; 
+					
+							list($width, $height) = getimagesize($upload);
+							$t_image = imagecreatetruecolor($new_width, $new_height);
+							imagealphablending( $t_image, false );
+							imagesavealpha( $t_image, true );
+							$gdImg = ($type == 'image/png')? imagecreatefrompng($upload) : imagecreatefromjpeg($upload);
+							if($gdImg){
+								imagecopyresampled($t_image, $gdImg, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
 								if(is_file($dir_path))
-								unlink($dir_path);
+									unlink($dir_path);
 								$uploaded_img = imagepng($t_image,$dir_path);
 								imagedestroy($gdImg);
 								imagedestroy($t_image);
+							}else{
+								$resp['msg'].=" But Image failed to upload due to unkown reason.";
+							}
 						}else{
-						$resp['msg'].=" But Image failed to upload due to unkown reason.";
+							// Fallback: Save file directly without resizing (GD library not available)
+							if(is_file($dir_path))
+								unlink($dir_path);
+							// Determine file extension based on mime type
+							$ext = ($type == 'image/png') ? 'png' : 'jpg';
+							$fname = 'uploads/clients/'.$uid.'.'.$ext;
+							$dir_path = base_app. $fname;
+							if(move_uploaded_file($upload, $dir_path)){
+								$uploaded_img = true;
+							}else{
+								$resp['msg'].=" But Image failed to upload due to unkown reason.";
+							}
 						}
 					}
-					if(isset($uploaded_img)){
+					if(isset($uploaded_img) && $uploaded_img){
 						$this->conn->query("UPDATE client_list set `image_path` = CONCAT('{$fname}','?v=',unix_timestamp(CURRENT_TIMESTAMP)) where id = '{$uid}' ");
 						if($id == $this->settings->userdata('id') && $this->settings->userdata('login_type') == 2){
 								$this->settings->set_userdata('image_path',$fname);
