@@ -56,13 +56,13 @@
 
     <!-- Contact Form Section -->
     <section class="py-5">
-        <div class="container">
+        <div class="container mt-5">
             <div class="">
                 <div class="row">
-                    <div class="card-body">
+                    <div class="card-body d-flex justify-content-center" >
                         <h4></h4>
                         <!-- Chatbot UI -->
-                        <div class="wrapper">
+                        <div class="wrapper" style="width: 60%;">
                             <div class="title">Chat with Us</div>
                             <div class="form">
                                 <div class="bot-inbox inbox">
