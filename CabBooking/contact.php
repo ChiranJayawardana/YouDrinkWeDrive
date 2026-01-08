@@ -39,9 +39,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us | Chatbot Integration</title>
-    <link rel="stylesheet" href="<?php echo base_url ?>style.css">
+    <link rel="stylesheet" href="<?php echo base_url ?>style.css?v=<?php echo time(); ?>">
     <script src="https://kit.fontawesome.com/a076d05399.js"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
     <!-- Header (Optional: Uncomment if needed) -->
@@ -69,7 +70,9 @@
                                         <i class="fas fa-user"></i>
                                     </div>
                                     <div class="msg-header">
-                                        <p>Hello there, how can I help you?</p>
+                                        <div class="markdown-content">
+                                            <p>Hello there, how can I help you?</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -117,7 +120,9 @@
                     type: 'POST',
                     data: 'text='+$value,
                     success: function(result){
-                        $replay = '<div class="bot-inbox inbox"><div class="icon"><i class="fas fa-user"></i></div><div class="msg-header"><p>'+ result +'</p></div></div>';
+                        // Parse markdown result
+                        var parsedResult = marked.parse(result);
+                        $replay = '<div class="bot-inbox inbox"><div class="icon"><i class="fas fa-user"></i></div><div class="msg-header"><div class="markdown-content">'+ parsedResult +'</div></div></div>';
                         $(".form").append($replay);
                         // When chat goes down, the scroll bar automatically moves to the bottom
                         $(".form").scrollTop($(".form")[0].scrollHeight);

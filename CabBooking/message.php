@@ -1,24 +1,58 @@
-<!-- Created By Chiran -->
 <?php
-// connecting to database
-$conn = mysqli_connect("localhost", "root", "1234", "youdrinkwedrive") or die("Database Error");
+// Created By Chiran - Updated to use Gemini API
 
-// getting user message through ajax
-$getMesg = mysqli_real_escape_string($conn, $_POST['text']);
+if (isset($_POST['text'])) {
+    $userMessage = $_POST['text'];
+    //$apiKey = 'AIzaSyCPJCGkWxY7TvavyO-lD0SpsMsEy3msL0Q'; // Replace with your actual Gemini API Key
+    $apiKey = 'AIzaSyAZDeFWY8WbqfR-x1p0SnzDww3DC60iPxA'; // Replace with your actual Gemini API Key
+    $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . $apiKey;
 
-//checking user query to database query
-$check_data = "SELECT replies FROM chatbot WHERE queries LIKE '%$getMesg%'";
-$run_query = mysqli_query($conn, $check_data) or die("Error");
+    $data = [
+        "contents" => [
+            [
+                "parts" => [
+                    ["text" => $userMessage]
+                ]
+            ]
+        ]
+    ];
 
-// if user query matched to database query we'll show the reply otherwise it go to else statement
-if(mysqli_num_rows($run_query) > 0){
-    //fetching replay from the database according to the user query
-    $fetch_data = mysqli_fetch_assoc($run_query);
-    //storing replay to a varible which we'll send to ajax
-    $replay = $fetch_data['replies'];
-    echo $replay;
-}else{
-    echo "Sorry can't be able to understand you!";
+    $jsonData = json_encode($data);
+
+    $ch = curl_init($apiUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
+    
+    // Disable SSL verification for local development (if needed, otherwise remove this line in production)
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
+    $response = curl_exec($ch);
+
+    if (curl_errno($ch)) {
+        echo 'Error: ' . curl_error($ch);
+    } else {
+        $decodedResponse = json_decode($response, true);
+        
+        // Check if candidates exist and have content
+        if (isset($decodedResponse['candidates'][0]['content']['parts'][0]['text'])) {
+            $botReply = $decodedResponse['candidates'][0]['content']['parts'][0]['text'];
+            echo $botReply;
+        } else {
+            // Fallback if the API structure changes or returns an error payload
+             if (isset($decodedResponse['error']['message'])) {
+                 echo "API Error: " . $decodedResponse['error']['message'];
+             } else {
+                 echo "Sorry, I couldn't process your request at the moment.";
+             }
+        }
+    }
+
+    curl_close($ch);
+} else {
+    echo "No message received.";
 }
-
 ?>
