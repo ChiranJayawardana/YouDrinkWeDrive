@@ -58,12 +58,162 @@
     }
   })
 </script>
+<style>
+    .modern-footer {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        padding: 60px 0 30px;
+        color: white;
+        margin-top: 80px;
+    }
+    .footer-content {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+    }
+    .footer-brand {
+        display: flex;
+        flex-direction: column;
+    }
+    .footer-logo {
+        width: 60px;
+        height: 60px;
+        margin-bottom: 20px;
+    }
+    .footer-brand h3 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 15px;
+        color: #06b6d4;
+    }
+    .footer-brand p {
+        color: #94a3b8;
+        line-height: 1.6;
+    }
+    .footer-section h4 {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: white;
+    }
+    .footer-links {
+        list-style: none;
+        padding: 0;
+    }
+    .footer-links li {
+        margin-bottom: 12px;
+    }
+    .footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .footer-links a:hover {
+        color: #06b6d4;
+        transform: translateX(5px);
+    }
+    .footer-social {
+        display: flex;
+        gap: 15px;
+        margin-top: 20px;
+    }
+    .footer-social a {
+        width: 45px;
+        height: 45px;
+        background: rgba(6, 182, 212, 0.2);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #06b6d4;
+        transition: all 0.3s ease;
+    }
+    .footer-social a:hover {
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        color: white;
+        transform: translateY(-3px);
+    }
+    .footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 30px;
+        text-align: center;
+        color: #64748b;
+    }
+    .footer-bottom p {
+        margin: 0;
+    }
+    .footer-bottom a {
+        color: #06b6d4;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    .footer-bottom a:hover {
+        color: #14b8a6;
+    }
+    @media (max-width: 992px) {
+        .footer-content {
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+    }
+    @media (max-width: 576px) {
+        .footer-content {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
+
 <!-- Footer-->
-<footer class="py-4 bg-dark">
-            <div class="container">
-              <p class="m-0 text-center text-white">&copy; <?php echo $_settings->info('short_name') ?> <?php echo date('Y');?> >> Developed By: Chiran Jayawardhana</p>
-          </div>
-        </footer>
+<footer class="modern-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <img src="<?php echo validate_image($_settings->info('logo')) ?>" alt="Logo" class="footer-logo">
+                <h3><?php echo $_settings->info('short_name') ?></h3>
+                <p>Your trusted partner for safe and reliable transportation services. Available 24/7 to serve you.</p>
+                <div class="footer-social">
+                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="./"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="./?p=about"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="./?p=cab_available"><i class="fas fa-taxi"></i> Book Driver</a></li>
+                    <li><a href="./?p=contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Account</h4>
+                <ul class="footer-links">
+                    <li><a href="./login.php"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+                    <li><a href="./register.php"><i class="fas fa-user-plus"></i> Register</a></li>
+                    <li><a href="./?p=booking_list"><i class="fas fa-list"></i> My Bookings</a></li>
+                    <li><a href="./?p=manage_account"><i class="fas fa-user-cog"></i> Settings</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul class="footer-links">
+                    <li><a href="./?p=contact"><i class="fas fa-headset"></i> Help Center</a></li>
+                    <li><a href="#"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+                    <li><a href="#"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
+                    <li><a href="#"><i class="fas fa-question-circle"></i> FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; <?php echo date('Y');?> <?php echo $_settings->info('short_name') ?>. All rights reserved. | Developed by <a href="#">Chiran Jayawardhana</a></p>
+        </div>
+    </div>
+</footer>
 
    
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -98,6 +248,10 @@
     <!-- <script src="<?php echo base_url ?>plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
     <!-- AdminLTE App -->
     <script src="<?php echo base_url ?>dist/js/adminlte.js"></script>
+    <!-- Advanced Interactions -->
+    <script src="<?php echo base_url ?>assets/js/animations.js"></script>
+    <script src="<?php echo base_url ?>assets/js/interactions.js"></script>
+    <script src="<?php echo base_url ?>assets/js/form-enhancements.js"></script>
     <div class="daterangepicker ltr show-ranges opensright">
       <div class="ranges">
         <ul>

@@ -47,10 +47,259 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
     #uni_modal .modal-footer{
         display:none
     }
+    #uni_modal .modal-dialog {
+        max-width: 1000px !important;
+        width: 90% !important;
+    }
+    .driver-booking-details-container {
+        padding: 20px 0;
+        position: relative;
+    }
+    .close-btn-top {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        width: 40px;
+        height: 40px;
+        background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        border: none;
+        border-radius: 50%;
+        color: white;
+        font-size: 1.2rem;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(74, 85, 104, 0.3);
+        z-index: 10;
+    }
+    .close-btn-top:hover {
+        background: linear-gradient(135deg, #f56565 0%, #e53e3e 100%);
+        transform: rotate(90deg) scale(1.1);
+        box-shadow: 0 6px 20px rgba(245, 101, 101, 0.4);
+    }
+    .detail-section {
+        background: white;
+        border-radius: 15px;
+        padding: 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    }
+    .section-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    .section-header i {
+        color: #14b8a6;
+        font-size: 1.3rem;
+    }
+    .section-header h5 {
+        margin: 0;
+        font-weight: 700;
+        color: #2d3748;
+        font-size: 1.1rem;
+    }
+    .detail-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px 0;
+        border-bottom: 1px solid #f1f5f9;
+    }
+    .detail-item:last-child {
+        border-bottom: none;
+    }
+    .detail-icon {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 1.1rem;
+        flex-shrink: 0;
+    }
+    .detail-content {
+        flex: 1;
+    }
+    .detail-label {
+        font-size: 0.75rem;
+        color: #a0aec0;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 5px;
+        font-weight: 600;
+    }
+    .detail-value {
+        font-size: 1rem;
+        color: #2d3748;
+        font-weight: 600;
+    }
+    .highlight-card {
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        border-radius: 15px;
+        padding: 25px;
+        padding-top: 50px;
+        color: white;
+        margin-bottom: 20px;
+        text-align: center;
+        position: relative;
+    }
+    .highlight-label {
+        font-size: 0.85rem;
+        opacity: 0.9;
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .highlight-value {
+        font-size: 2rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+    }
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
+    .action-buttons {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 25px;
+        padding-top: 20px;
+        border-top: 2px solid #e2e8f0;
+    }
+    .btn-modern {
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
 </style>
-<div class="container-fluid">
+
+<div class="driver-booking-details-container">
+    <button class="close-btn-top" type="button" data-dismiss="modal" title="Close">
+        <i class="fas fa-times"></i>
+    </button>
+    
+    <div class="highlight-card">
+        <div class="highlight-label">Booking Reference</div>
+        <div class="highlight-value"><?= isset($ref_code) ? htmlspecialchars($ref_code) : "N/A" ?></div>
+        <div style="margin-top: 15px;">
+            <?php 
+                $status_class = '';
+                $status_icon = '';
+                $status_text = '';
+                switch($status ?? 0){
+                    case 0:
+                        $status_class = 'status-pending';
+                        $status_icon = 'fa-clock';
+                        $status_text = 'Pending';
+                        break;
+                    case 1:
+                        $status_class = 'status-confirmed';
+                        $status_icon = 'fa-check-circle';
+                        $status_text = 'Driver Confirmed';
+                        break;
+                    case 2:
+                        $status_class = 'status-picked';
+                        $status_icon = 'fa-car';
+                        $status_text = 'Picked-up';
+                        break;
+                    case 3:
+                        $status_class = 'status-completed';
+                        $status_icon = 'fa-check-double';
+                        $status_text = 'Dropped off';
+                        break;
+                    case 4:
+                        $status_class = 'status-cancelled';
+                        $status_icon = 'fa-times-circle';
+                        $status_text = 'Cancelled';
+                        break;
+                }
+            ?>
+            <span class="status-badge <?= $status_class ?>">
+                <i class="fas <?= $status_icon ?>"></i>
+                <?= $status_text ?>
+            </span>
+        </div>
+    </div>
 
     <div class="row">
+        <div class="col-md-6">
+            <div class="detail-section">
+                <div class="section-header">
+                    <i class="fas fa-route"></i>
+                    <h5>Trip Information</h5>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <div class="detail-content">
+                        <div class="detail-label">Fee</div>
+                        <div class="detail-value"><?= isset($fee) ? "LKR " . number_format($fee, 2) : "N/A" ?></div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-tag"></i>
+                    </div>
+                    <div class="detail-content">
+                        <div class="detail-label">Vehicle Category</div>
+                        <div class="detail-value"><?= isset($category) ? htmlspecialchars($category) : "N/A" ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="detail-section">
+                <div class="section-header">
+                    <i class="fas fa-user"></i>
+                    <h5>Client Information</h5>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-phone"></i>
+                    </div>
+                    <div class="detail-content">
+                        <div class="detail-label">Client Contact</div>
+                        <div class="detail-value"><?= isset($contact) ? htmlspecialchars($contact) : "N/A" ?></div>
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <div class="detail-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="detail-content">
+                        <div class="detail-label">Client Email</div>
+                        <div class="detail-value"><?= isset($email) ? htmlspecialchars($email) : "N/A" ?></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row d-none">
         <div class="col-md-6">
             <fieldset class="bor">
                 <legend class="h5 text-muted"> </legend>

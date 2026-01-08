@@ -1,0 +1,363 @@
+/**
+ * CMS Content Styling
+ * Ensures admin-edited Summernote content displays beautifully
+ */
+
+/* ==================== CMS CONTENT WRAPPERS ==================== */
+.cms-content-section {
+    padding: 80px 0;
+    background: white;
+}
+
+.cms-content-wrapper {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    border: 2px solid #e2e8f0;
+}
+
+.cms-about-wrapper {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* ==================== TYPOGRAPHY ==================== */
+.cms-content-wrapper h1,
+.cms-about-wrapper h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 25px;
+    line-height: 1.3;
+}
+
+.cms-content-wrapper h2,
+.cms-about-wrapper h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    line-height: 1.4;
+}
+
+.cms-content-wrapper h3,
+.cms-about-wrapper h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+.cms-content-wrapper h4,
+.cms-about-wrapper h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #334155;
+    margin-top: 25px;
+    margin-bottom: 12px;
+}
+
+.cms-content-wrapper p,
+.cms-about-wrapper p {
+    color: #475569;
+    line-height: 1.8;
+    font-size: 1.05rem;
+    margin-bottom: 20px;
+}
+
+.cms-content-wrapper strong,
+.cms-about-wrapper strong {
+    color: #0f172a;
+    font-weight: 700;
+}
+
+.cms-content-wrapper em,
+.cms-about-wrapper em {
+    font-style: italic;
+    color: #64748b;
+}
+
+/* ==================== LISTS ==================== */
+.cms-content-wrapper ul,
+.cms-content-wrapper ol,
+.cms-about-wrapper ul,
+.cms-about-wrapper ol {
+    margin: 20px 0;
+    padding-left: 30px;
+    color: #475569;
+}
+
+.cms-content-wrapper ul li,
+.cms-about-wrapper ul li {
+    margin-bottom: 12px;
+    line-height: 1.7;
+    position: relative;
+}
+
+.cms-content-wrapper ul li::marker,
+.cms-about-wrapper ul li::marker {
+    color: #06b6d4;
+}
+
+.cms-content-wrapper ol li,
+.cms-about-wrapper ol li {
+    margin-bottom: 12px;
+    line-height: 1.7;
+}
+
+.cms-content-wrapper ol li::marker,
+.cms-about-wrapper ol li::marker {
+    color: #06b6d4;
+    font-weight: 700;
+}
+
+/* ==================== LINKS ==================== */
+.cms-content-wrapper a,
+.cms-about-wrapper a {
+    color: #06b6d4;
+    text-decoration: underline;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.cms-content-wrapper a:hover,
+.cms-about-wrapper a:hover {
+    color: #0891b2;
+    text-decoration: none;
+}
+
+/* ==================== IMAGES ==================== */
+.cms-content-wrapper img,
+.cms-about-wrapper img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 15px;
+    margin: 25px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.cms-content-wrapper img[style*="float:left"],
+.cms-about-wrapper img[style*="float:left"] {
+    margin-right: 25px;
+    margin-bottom: 15px;
+}
+
+.cms-content-wrapper img[style*="float:right"],
+.cms-about-wrapper img[style*="float:right"] {
+    margin-left: 25px;
+    margin-bottom: 15px;
+}
+
+/* ==================== TABLES ==================== */
+.cms-content-wrapper table,
+.cms-about-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+.cms-content-wrapper table th,
+.cms-about-wrapper table th {
+    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    color: white;
+    padding: 15px;
+    text-align: left;
+    font-weight: 600;
+}
+
+.cms-content-wrapper table td,
+.cms-about-wrapper table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #e2e8f0;
+    color: #475569;
+}
+
+.cms-content-wrapper table tr:last-child td,
+.cms-about-wrapper table tr:last-child td {
+    border-bottom: none;
+}
+
+.cms-content-wrapper table tr:hover,
+.cms-about-wrapper table tr:hover {
+    background: #f8fafc;
+}
+
+/* ==================== BLOCKQUOTES ==================== */
+.cms-content-wrapper blockquote,
+.cms-about-wrapper blockquote {
+    border-left: 5px solid #06b6d4;
+    background: #f0fdfa;
+    padding: 20px 30px;
+    margin: 25px 0;
+    border-radius: 0 15px 15px 0;
+    font-style: italic;
+    color: #334155;
+}
+
+.cms-content-wrapper blockquote p,
+.cms-about-wrapper blockquote p {
+    margin-bottom: 0;
+    font-size: 1.1rem;
+}
+
+/* ==================== CODE BLOCKS ==================== */
+.cms-content-wrapper pre,
+.cms-about-wrapper pre {
+    background: #1e293b;
+    color: #e2e8f0;
+    padding: 20px;
+    border-radius: 12px;
+    overflow-x: auto;
+    margin: 25px 0;
+}
+
+.cms-content-wrapper code,
+.cms-about-wrapper code {
+    background: #f1f5f9;
+    color: #0891b2;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+}
+
+.cms-content-wrapper pre code,
+.cms-about-wrapper pre code {
+    background: transparent;
+    color: inherit;
+    padding: 0;
+}
+
+/* ==================== HR DIVIDERS ==================== */
+.cms-content-wrapper hr,
+.cms-about-wrapper hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #06b6d4, transparent);
+    margin: 40px 0;
+}
+
+/* ==================== BUTTONS IN CMS ==================== */
+.cms-content-wrapper .btn,
+.cms-about-wrapper .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 30px;
+    background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+    color: white;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+}
+
+.cms-content-wrapper .btn:hover,
+.cms-about-wrapper .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(6, 182, 212, 0.4);
+    color: white;
+}
+
+/* ==================== VIDEO EMBEDS ==================== */
+.cms-content-wrapper iframe,
+.cms-about-wrapper iframe {
+    max-width: 100%;
+    border-radius: 15px;
+    margin: 25px 0;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* ==================== ALERTS/NOTICES ==================== */
+.cms-content-wrapper .alert,
+.cms-about-wrapper .alert {
+    padding: 20px;
+    border-radius: 12px;
+    margin: 25px 0;
+    border-left: 5px solid;
+}
+
+.cms-content-wrapper .alert-info,
+.cms-about-wrapper .alert-info {
+    background: #f0fdfa;
+    border-left-color: #06b6d4;
+    color: #0e7490;
+}
+
+.cms-content-wrapper .alert-success,
+.cms-about-wrapper .alert-success {
+    background: #ecfdf5;
+    border-left-color: #10b981;
+    color: #047857;
+}
+
+.cms-content-wrapper .alert-warning,
+.cms-about-wrapper .alert-warning {
+    background: #fffbeb;
+    border-left-color: #f59e0b;
+    color: #b45309;
+}
+
+.cms-content-wrapper .alert-danger,
+.cms-about-wrapper .alert-danger {
+    background: #fef2f2;
+    border-left-color: #ef4444;
+    color: #b91c1c;
+}
+
+/* ==================== RESPONSIVE ==================== */
+@media (max-width: 768px) {
+    .cms-content-wrapper,
+    .cms-about-wrapper {
+        padding: 30px 20px;
+        border-radius: 15px;
+    }
+    
+    .cms-content-wrapper h1,
+    .cms-about-wrapper h1 {
+        font-size: 2rem;
+    }
+    
+    .cms-content-wrapper h2,
+    .cms-about-wrapper h2 {
+        font-size: 1.5rem;
+    }
+    
+    .cms-content-wrapper p,
+    .cms-about-wrapper p {
+        font-size: 1rem;
+    }
+    
+    .cms-content-wrapper table,
+    .cms-about-wrapper table {
+        font-size: 0.9rem;
+    }
+}
+
+/* ==================== SUMMERNOTE SPECIFIC ==================== */
+.cms-content-wrapper .note-editable,
+.cms-about-wrapper .note-editable {
+    padding: 0;
+}
+
+/* Handle Summernote's default styles */
+.cms-content-wrapper p:empty,
+.cms-about-wrapper p:empty {
+    display: none;
+}
+
+.cms-content-wrapper br + br,
+.cms-about-wrapper br + br {
+    display: none;
+}

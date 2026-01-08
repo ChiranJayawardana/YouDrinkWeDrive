@@ -23,28 +23,121 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
         object-position:center center;
     }
 </style>
-<div class="content py-5 mt-5">
+<style>
+    .account-hero {
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        padding: 60px 0 40px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    .account-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+        opacity: 0.3;
+    }
+    .account-hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+    .account-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+    .account-section {
+        padding: 40px 0;
+        background: #f8fafc;
+    }
+    .account-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    .account-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    .account-card-header i {
+        color: #06b6d4;
+        font-size: 1.5rem;
+    }
+    .account-card-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+    }
+    .modern-form-field {
+        margin-bottom: 20px;
+    }
+    .modern-form-field small {
+        display: block;
+        font-weight: 600;
+        color: #475569;
+        margin-bottom: 8px;
+        font-size: 0.95rem;
+    }
+    .modern-form-field input,
+    .modern-form-field select,
+    .modern-form-field textarea {
+        border: 2px solid #e2e8f0 !important;
+        border-radius: 12px !important;
+        padding: 14px 18px !important;
+        transition: all 0.3s ease !important;
+        background: #f8fafc !important;
+    }
+    .modern-form-field input:focus,
+    .modern-form-field select:focus,
+    .modern-form-field textarea:focus {
+        border-color: #06b6d4 !important;
+        background: white !important;
+        box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.1) !important;
+    }
+</style>
+
+<section class="account-hero">
+    <div class="container account-hero-content">
+        <h1><i class="fas fa-user-cog"></i> Manage Account</h1>
+        <p>Update your personal information and credentials</p>
+    </div>
+</section>
+
+<section class="account-section">
     <div class="container">
-        <div class="card card-outline card-purple shadow rounded-0">
-            <div class="card-header">
-                <h4 class="card-title"><b>Manage Account Details/Credentials</b></h4>
+        <div class="account-card">
+            <div class="account-card-header">
+                <i class="fas fa-user-edit"></i>
+                <h3 class="account-card-title">Account Details</h3>
             </div>
             <div class="card-body">
                 <div class="container-fluid">
                     <form id="register-frm" action="" method="post">
                         <input type="hidden" name="id" value="<?= isset($id) ? $id : "" ?>">
                         <div class="row">
-                            <div class="form-group col-md-6">
+                            <div class="col-md-6 modern-form-field">
+                                <small>First Name</small>
                                 <input type="text" name="firstname" id="firstname" placeholder="Enter First Name" autofocus class="form-control form-control-sm form-control-border" value="<?= isset($firstname) ? $firstname : "" ?>" required>
-                                <small class="ml-3">First Name</small>
                             </div>
-                            <div class="form-group col-md-6">
-                                <input type="text" name="middlename" id="middlename" placeholder="Enter Middle Name (optional)" class="form-control form-control-sm form-control-border" value="<?= isset($middlename) ? $middlename : "" ?>">
-                                <small class="ml-3">Middle Name</small>
+                            <div class="col-md-6 modern-form-field">
+                                <small>Middle Name (Optional)</small>
+                                <input type="text" name="middlename" id="middlename" placeholder="Enter Middle Name" class="form-control form-control-sm form-control-border" value="<?= isset($middlename) ? $middlename : "" ?>">
                             </div>
-                            <div class="form-group col-md-6">
+                            <div class="col-md-6 modern-form-field">
+                                <small>Last Name</small>
                                 <input type="text" name="lastname" id="lastname" placeholder="Enter Last Name" class="form-control form-control-sm form-control-border" required value="<?= isset($lastname) ? $lastname : "" ?>">
-                                <small class="ml-3">Last Name</small>
                             </div>
                         </div>
                         <div class="row">
@@ -133,7 +226,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 2){
             </div>
         </div>
     </div>
-</div>
+</section>
 <script>
      window.displayImg = function(input,_this) {
 	    if (input.files && input.files[0]) {

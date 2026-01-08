@@ -3,14 +3,17 @@
 	alert_toast("<?php echo $_settings->flashdata('success') ?>",'success')
 </script>
 <?php endif;?>
-<div class="card card-outline card-purple">
+<div class="card admin-modern-card">
 	<div class="card-header">
-		<h3 class="card-title">List of Clients</h3>
+		<h3 class="card-title" style="display: flex; align-items: center; gap: 10px;">
+			<i class="fas fa-users"></i>
+			<span>List of Clients</span>
+		</h3>
 	</div>
 	<div class="card-body">
 		<div class="container-fluid">
         <div class="container-fluid">
-			<table class="table table-bordered table-stripped table-hover">
+			<table class="table table-bordered table-stripped table-hover admin-modern-table">
 				<colgroup>
 					<col width="5%">
 					<!-- <col width="15%"> -->
@@ -20,7 +23,7 @@
 					<col width="15%">
 				</colgroup>
 				<thead>
-				<tr class="bg-gradient-dark text-light">
+					<tr>
 						<th>#</th>
 						<!-- <th>Date Created</th> -->
 						<th>Name</th>

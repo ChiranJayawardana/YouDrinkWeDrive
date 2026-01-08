@@ -12,11 +12,7 @@
       height:calc(100%);
     }
       body{
-         
-          /* background-image:url('<?= validate_image($_settings->info('cover')) ?>');
-          background-repeat: no-repeat;
-          background-size:cover; */
-          background-color: rgb(143, 174, 202);
+          background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
       }
       #logo-img{
           width:15em;
@@ -128,7 +124,9 @@
             </div>
             <!-- /.col -->
             <div class="col-4">
-              <button type="submit" class="btn btn-primary btn-sm btn-flat btn-block" >Register</button>
+              <button type="submit" class="btn btn-sm btn-flat btn-block" style="background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); color: white; padding: 12px; font-weight: 700; border-radius: 12px; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3); transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-2px)'; this.style.boxShadow='0 6px 20px rgba(6, 182, 212, 0.4)'" onmouseout="this.style.transform=''; this.style.boxShadow='0 4px 15px rgba(6, 182, 212, 0.3)'">
+              <i class="fas fa-user-check"></i> Register
+            </button>
             </div>
             <!-- /.col -->
           </div>

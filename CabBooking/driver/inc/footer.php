@@ -58,12 +58,74 @@
     }
   })
 </script>
+<style>
+    .modern-driver-footer {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        padding: 40px 0 20px;
+        color: white;
+        margin-top: 60px;
+    }
+    .driver-footer-content {
+        text-align: center;
+    }
+    .driver-footer-logo {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 15px;
+    }
+    .driver-footer-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: #14b8a6;
+        margin-bottom: 15px;
+    }
+    .driver-footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 30px;
+        margin: 25px 0;
+        flex-wrap: wrap;
+    }
+    .driver-footer-links a {
+        color: #94a3b8;
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+    .driver-footer-links a:hover {
+        color: #14b8a6;
+    }
+    .driver-footer-bottom {
+        border-top: 1px solid rgba(255,255,255,0.1);
+        padding-top: 20px;
+        margin-top: 20px;
+        color: #64748b;
+        font-size: 0.9rem;
+    }
+    .driver-footer-bottom a {
+        color: #14b8a6;
+        text-decoration: none;
+        font-weight: 600;
+    }
+</style>
+
 <!-- Footer-->
-<footer class="py-4 bg-dark">
-            <div class="container">
-            <p class="m-0 text-center text-white">&copy; <?php echo $_settings->info('short_name') ?> <?php echo date('Y');?> >> Developed By: Chiran Jayawardhana</p>
-          </div>
-        </footer>
+<footer class="modern-driver-footer">
+    <div class="container">
+        <div class="driver-footer-content">
+            <img src="<?php echo validate_image($_settings->info('logo')) ?>" alt="Logo" class="driver-footer-logo">
+            <div class="driver-footer-title"><?php echo $_settings->info('short_name') ?> - Driver Portal</div>
+            <div class="driver-footer-links">
+                <a href="./"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="./?p=manage_account"><i class="fas fa-user"></i> My Account</a>
+                <a href="<?= base_url ?>classes/Login.php?f=logout_driver"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+            <div class="driver-footer-bottom">
+                <p>&copy; <?php echo date('Y');?> <?php echo $_settings->info('short_name') ?>. All rights reserved. | Developed by <a href="#">Chiran Jayawardhana</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
 
    
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
@@ -98,6 +160,10 @@
     <!-- <script src="<?php echo base_url ?>plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script> -->
     <!-- AdminLTE App -->
     <script src="<?php echo base_url ?>dist/js/adminlte.js"></script>
+    <!-- Advanced Interactions -->
+    <script src="<?php echo base_url ?>assets/js/animations.js"></script>
+    <script src="<?php echo base_url ?>assets/js/interactions.js"></script>
+    <script src="<?php echo base_url ?>assets/js/form-enhancements.js"></script>
     <div class="daterangepicker ltr show-ranges opensright">
       <div class="ranges">
         <ul>

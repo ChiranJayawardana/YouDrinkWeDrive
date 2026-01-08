@@ -1,0 +1,294 @@
+/**
+ * Microinteractions
+ * Button effects, ripples, and subtle animations
+ */
+
+/* ==================== RIPPLE EFFECT ==================== */
+.ripple {
+    position: relative;
+    overflow: hidden;
+}
+
+.ripple::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.ripple:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* ==================== BUTTON STATES ==================== */
+.btn-interactive {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-interactive::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.4s ease, height 0.4s ease;
+}
+
+.btn-interactive:hover::before {
+    width: 300%;
+    height: 300%;
+}
+
+.btn-interactive:active {
+    transform: scale(0.95);
+}
+
+/* ==================== HOVER LIFT ==================== */
+.hover-lift-sm {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift-sm:hover {
+    transform: translateY(-3px);
+}
+
+.hover-lift-md {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift-md:hover {
+    transform: translateY(-8px);
+}
+
+.hover-lift-lg {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift-lg:hover {
+    transform: translateY(-12px);
+}
+
+/* ==================== 3D TILT ==================== */
+.tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.tilt-card:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
+}
+
+/* ==================== SCALE EFFECTS ==================== */
+.scale-on-hover {
+    transition: transform 0.3s ease;
+}
+
+.scale-on-hover:hover {
+    transform: scale(1.05);
+}
+
+.scale-on-active:active {
+    transform: scale(0.95);
+}
+
+/* ==================== ICON ANIMATIONS ==================== */
+@keyframes icon-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+.icon-bounce:hover {
+    animation: icon-bounce 0.6s ease;
+}
+
+@keyframes icon-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.icon-spin-hover:hover {
+    animation: icon-spin 0.6s ease;
+}
+
+@keyframes icon-pulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+}
+
+.icon-pulse {
+    animation: icon-pulse 2s ease-in-out infinite;
+}
+
+/* ==================== TEXT EFFECTS ==================== */
+@keyframes gradient-shift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.gradient-text-animated {
+    background: linear-gradient(90deg, #06b6d4, #0891b2, #14b8a6, #06b6d4);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradient-shift 3s ease infinite;
+}
+
+/* ==================== BADGE PULSE ==================== */
+@keyframes badge-pulse {
+    0%, 100% { 
+        box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.7);
+    }
+    50% { 
+        box-shadow: 0 0 0 8px rgba(6, 182, 212, 0);
+    }
+}
+
+.badge-pulse {
+    animation: badge-pulse 2s ease-in-out infinite;
+}
+
+/* ==================== FLOATING ELEMENTS ==================== */
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+}
+
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+.floating-slow {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* ==================== SHAKE EFFECT ==================== */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake-on-error {
+    animation: shake 0.5s ease;
+}
+
+/* ==================== SHINE EFFECT ==================== */
+.shine {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.3), 
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.shine:hover::before {
+    left: 100%;
+}
+
+/* ==================== GLOW ON FOCUS ==================== */
+.glow-focus {
+    transition: all 0.3s ease;
+}
+
+.glow-focus:focus {
+    box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.2),
+                0 0 20px rgba(6, 182, 212, 0.4);
+}
+
+/* ==================== BORDER ANIMATIONS ==================== */
+.border-draw {
+    position: relative;
+}
+
+.border-draw::before,
+.border-draw::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background: #06b6d4;
+    transition: width 0.3s ease;
+}
+
+.border-draw::before {
+    top: 0;
+    left: 0;
+}
+
+.border-draw::after {
+    bottom: 0;
+    right: 0;
+}
+
+.border-draw:hover::before,
+.border-draw:hover::after {
+    width: 100%;
+}
+
+/* ==================== REVEAL ANIMATIONS ==================== */
+.reveal-content {
+    position: relative;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.reveal-content.active {
+    max-height: 1000px;
+}
+
+/* ==================== MORPHING SHAPES ==================== */
+@keyframes morph {
+    0%, 100% { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+    50% { border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%; }
+}
+
+.morphing {
+    animation: morph 8s ease-in-out infinite;
+}
+
+/* ==================== PROGRESS INDICATORS ==================== */
+.progress-ring {
+    transform: rotate(-90deg);
+    transition: stroke-dashoffset 0.5s ease;
+}
+
+/* ==================== TOOLTIP ANIMATIONS ==================== */
+.tooltip-modern {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 0.3s ease;
+    pointer-events: none;
+}
+
+.has-tooltip:hover .tooltip-modern {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}

@@ -33,7 +33,7 @@
 					<col width="10%">
 				</colgroup>
 				<thead>
-				<tr class="bg-gradient-dark text-light">
+					<tr>
 						<th>#</th>
 						<th>Avatar</th>
 						<th>Name</th>

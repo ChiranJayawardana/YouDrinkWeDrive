@@ -23,11 +23,71 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
         object-position:center center;
     }
 </style>
-<div class="content py-5 mt-5">
+<style>
+    .driver-account-hero {
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        padding: 60px 0 40px;
+        color: white;
+        position: relative;
+        overflow: hidden;
+    }
+    .driver-account-hero::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+        opacity: 0.3;
+    }
+    .driver-account-hero-content {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+    }
+    .driver-account-hero h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.5rem;
+    }
+    .driver-account-section {
+        padding: 40px 0;
+        background: #f8fafc;
+    }
+    .driver-account-card {
+        background: white;
+        border-radius: 20px;
+        padding: 35px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .driver-account-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 2px solid #e2e8f0;
+    }
+    .driver-account-card-header i {
+        color: #14b8a6;
+        font-size: 1.5rem;
+    }
+</style>
+
+<section class="driver-account-hero">
+    <div class="container driver-account-hero-content">
+        <h1><i class="fas fa-user-cog"></i> Manage Account</h1>
+        <p>Update your driver profile and credentials</p>
+    </div>
+</section>
+
+<section class="driver-account-section">
     <div class="container">
-        <div class="card card-outline card-purple shadow rounded-0">
-            <div class="card-header">
-                <h4 class="card-title"><b>Manage Account Details</b></h4>
+        <div class="driver-account-card">
+            <div class="driver-account-card-header">
+                <i class="fas fa-user-edit"></i>
+                <h3 style="font-weight: 700; color: #0f172a; margin: 0;">Account Details</h3>
             </div>
             <div class="card-body">
                 <div class="container-fluid">
@@ -113,7 +173,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
             </div>
         </div>
     </div>
-</div>
+</section>
 <script>
      window.displayImg = function(input,_this) {
 	    if (input.files && input.files[0]) {

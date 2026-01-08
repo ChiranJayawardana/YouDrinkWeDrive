@@ -107,7 +107,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         border-bottom: 2px solid #e2e8f0;
     }
     .section-header i {
-        color: #667eea;
+        color: #06b6d4;
         font-size: 1.3rem;
     }
     .section-header h5 {
@@ -186,7 +186,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         color: white;
     }
     .highlight-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
         border-radius: 15px;
         padding: 25px;
         padding-top: 50px;
@@ -439,7 +439,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
     <!-- Action Buttons -->
     <?php if(isset($status) && $status == 0): ?>
     <div class="action-buttons">
-        <button class="btn-modern btn-cancel" type="button" id="cancel_booking">
+        <button class="btn-modern btn-cancel ripple btn-interactive" type="button" id="cancel_booking">
             <i class="fas fa-times-circle"></i>
             <span>Cancel Booking</span>
         </button>

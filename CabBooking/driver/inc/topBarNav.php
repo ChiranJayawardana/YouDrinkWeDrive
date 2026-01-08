@@ -6,7 +6,72 @@
     object-position: center center;
 }
 </style>
-<nav class="navbar navbar-expand-lg navbar-dark bg-gradient-purple fixed-top" id="topNavBar">
+<style>
+    #topNavBar {
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%) !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+    #topNavBar.scrolled {
+        background: linear-gradient(135deg, #0d9488 0%, #0f766e 100%) !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+    #topNavBar .navbar-brand {
+        font-weight: 700;
+        font-size: 1.25rem;
+        transition: all 0.3s ease;
+    }
+    #topNavBar .navbar-brand:hover {
+        transform: scale(1.05);
+    }
+    #topNavBar .nav-link {
+        font-weight: 500;
+        transition: all 0.3s ease;
+        position: relative;
+    }
+    #topNavBar .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%) scaleX(0);
+        width: 80%;
+        height: 3px;
+        background: white;
+        border-radius: 2px;
+        transition: transform 0.3s ease;
+    }
+    #topNavBar .nav-link:hover::after,
+    #topNavBar .nav-link.active::after {
+        transform: translateX(-50%) scaleX(1);
+    }
+    #topNavBar .dropdown-menu {
+        border-radius: 12px;
+        border: none;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        padding: 10px;
+    }
+    #topNavBar .dropdown-item {
+        border-radius: 8px;
+        padding: 10px 15px;
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+    #topNavBar .dropdown-item:hover {
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
+        color: white;
+        transform: translateX(5px);
+    }
+    #user_avatar {
+        border: 3px solid white !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        transition: all 0.3s ease;
+    }
+    #user_avatar:hover {
+        transform: scale(1.1);
+    }
+</style>
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="topNavBar">
             <div class="container px-4 px-lg-5 ">
                 <button class="navbar-toggler btn btn-sm" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <a class="navbar-brand" href="./">

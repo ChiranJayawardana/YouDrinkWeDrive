@@ -1,10 +1,13 @@
-<div class="card card-outline card-purple shadow rounded-0">
+<div class="card admin-modern-card">
     <div class="card-header">
-        <h3 class="card-title">Booking List</h3>
+        <h3 class="card-title" style="display: flex; align-items: center; gap: 10px;">
+            <i class="fas fa-tasks"></i>
+            <span>Booking List</span>
+        </h3>
     </div>
     <div class="card-body">
         <div class="container-fluid">
-            <table class="table table-striped table-bordered table-hover">
+            <table class="table table-striped table-bordered table-hover admin-modern-table">
                 <colgroup>
                     <col width="5%">
                     <col width="14%">
@@ -15,7 +18,7 @@
                     <col width="10%">
                 </colgroup>
                 <thead>
-                    <tr class="bg-gradient-dark text-light">
+                    <tr>
                         <th class="text-center">#</th>
                         <th class="text-center">Date Booked</th>
                         <th class="text-center">Ref. Code</th>

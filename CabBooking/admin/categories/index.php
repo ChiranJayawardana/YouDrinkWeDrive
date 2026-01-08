@@ -3,16 +3,19 @@
 	alert_toast("<?php echo $_settings->flashdata('success') ?>",'success')
 </script>
 <?php endif;?>
-<div class="card card-outline card-purple rounded-0 shadow">
+<div class="card admin-modern-card">
 	<div class="card-header">
-		<h3 class="card-title">List of Categories</h3>
+		<h3 class="card-title" style="display: flex; align-items: center; gap: 10px;">
+			<i class="fas fa-th"></i>
+			<span>List of Categories</span>
+		</h3>
 		<div class="card-tools">
-			<button type="button" id="create_new" class="btn btn-flat btn-success btn-sm"><span class="fas fa-plus"></span>  Add New Category</button>
+			<button type="button" id="create_new" class="btn btn-flat btn-sm btn-admin-primary"><span class="fas fa-plus"></span>  Add New Category</button>
 		</div>
 	</div>
 	<div class="card-body">
 		<div class="container-fluid">
-			<table class="table table-bordered table-stripped table-hover">
+			<table class="table table-bordered table-stripped table-hover admin-modern-table">
 				<colgroup>
 					<col width="10%">
 					<!-- <col width="20%"> -->
@@ -22,7 +25,7 @@
 					<col width="15%">
 				</colgroup>
 				<thead>
-				<tr class="bg-gradient-dark text-light">
+				<tr>
 						<th class="text-center">Category ID</th>
 						<!-- <th>Date Created</th> -->
 						<th class="text-center">Category</th>

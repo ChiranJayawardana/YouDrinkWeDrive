@@ -1,6 +1,6 @@
 <style>
     .drivers-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
         padding: 80px 0 60px;
         color: white;
         position: relative;
@@ -54,7 +54,7 @@
     .search-container .input-group-text {
         background: transparent;
         border: none;
-        color: #667eea;
+        color: #06b6d4;
         padding: 12px 20px;
     }
     .drivers-section {
@@ -75,6 +75,27 @@
         position: relative;
         overflow: hidden;
     }
+    .availability-badge {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
+    .driver-rating {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        font-size: 1.1rem;
+    }
     .driver-card::before {
         content: '';
         position: absolute;
@@ -82,14 +103,14 @@
         left: 0;
         right: 0;
         height: 4px;
-        background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(90deg, #06b6d4 0%, #0891b2 100%);
         transform: scaleX(0);
         transition: transform 0.3s ease;
     }
     .driver-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 15px 35px rgba(66, 82, 151, 0.2);
-        border-color: #667eea;
+        transform: translateY(-8px);
+        box-shadow: 0 12px 30px rgba(6, 182, 212, 0.2);
+        border-color: #06b6d4;
     }
     .driver-card:hover::before {
         transform: scaleX(1);
@@ -97,7 +118,7 @@
     .driver-card .driver-icon {
         width: 80px;
         height: 80px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -105,7 +126,7 @@
         margin: 0 auto 20px;
         color: white;
         font-size: 2rem;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 5px 15px rgba(6, 182, 212, 0.3);
     }
     .driver-card .driver-name {
         font-size: 1.5rem;
@@ -120,7 +141,7 @@
     }
     .driver-card .driver-category {
         display: inline-block;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #14b8a6 0%, #0d9488 100%);
         color: white;
         padding: 8px 20px;
         border-radius: 20px;
@@ -129,13 +150,18 @@
         margin-bottom: 10px;
     }
     .driver-card .driver-identity {
+        color: #64748b;
+        font-size: 0.9rem;
+        margin-top: 10px;
+    }
+    .driver-card .driver-identity {
         color: #718096;
         font-size: 0.9rem;
         margin-top: 10px;
     }
     .driver-card .book-btn {
         margin-top: 20px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
         color: white;
         border: none;
         padding: 12px 30px;
@@ -152,7 +178,7 @@
     }
     .driver-card .book-btn:hover {
         transform: scale(1.05);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4);
     }
     .no-results {
         text-align: center;
@@ -227,6 +253,9 @@
             ?>
             <div class="col-lg-4 col-md-6 col-sm-12 item">
                 <div class="driver-card book_cab" data-id="<?php echo $row['id'] ?>" data-bodyno="<?php echo $row['driver_name'] ?>">
+                    <div class="availability-badge">
+                        <i class="fas fa-circle"></i> Available
+                    </div>
                     <div class="driver-icon">
                         <i class="fas fa-user-tie"></i>
                     </div>
@@ -235,7 +264,15 @@
                         <span class="driver-category">
                             <i class="fas fa-tag"></i> <?php echo htmlspecialchars($row['category']) ?>
                         </span>
-                        <div class="driver-identity">
+                        <div class="driver-rating" style="margin-top: 15px; color: #f59e0b;">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                            <span style="margin-left: 8px; color: #64748b; font-weight: 600;">4.5</span>
+                        </div>
+                        <div class="driver-identity" style="margin-top: 12px;">
                             <i class="fas fa-id-card"></i> <?php echo htmlspecialchars($row['driver_identity']) ?>
                         </div>
                     </div>
@@ -247,9 +284,14 @@
             <?php endwhile; ?>
         </div>
         <div id="noResult" style="display:none" class="no-results">
-            <i class="fas fa-search"></i>
-            <h3>No Drivers Found</h3>
-            <p class="text-muted">Try adjusting your search criteria</p>
+            <div style="font-size: 5rem; margin-bottom: 20px;">
+                <i class="fas fa-search" style="color: #cbd5e0;"></i>
+            </div>
+            <h3 style="color: #475569; font-weight: 700; margin-bottom: 15px;">No Drivers Found</h3>
+            <p class="text-muted" style="margin-bottom: 25px;">Try adjusting your search criteria</p>
+            <button class="modern-btn modern-btn-secondary" onclick="$('#search').val('').trigger('input')">
+                <i class="fas fa-redo"></i> Clear Search
+            </button>
         </div>
     </div>
 </section>
@@ -308,17 +350,8 @@
             alert_toast(" Please Login First.","warning");
         })
 
-        // Animate cards on load
-        $('#driver_list .item').each(function(index){
-            $(this).css({
-                'opacity': '0',
-                'transform': 'translateY(20px)'
-            }).delay(index * 100).animate({
-                'opacity': '1'
-            }, 500, function(){
-                $(this).css('transform', 'translateY(0)');
-            });
-        });
+        // No animations - keep professional look
+        $('#driver_list .item').css('opacity', '1');
     })
     
     $(document).scroll(function() { 

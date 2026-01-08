@@ -1,6 +1,6 @@
 <style>
     .bookings-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
         padding: 60px 0 40px;
         color: white;
         position: relative;
@@ -82,7 +82,7 @@
         gap: 8px;
     }
     .booking-ref i {
-        color: #667eea;
+        color: #06b6d4;
     }
     .booking-date {
         color: #718096;
@@ -136,7 +136,7 @@
     .detail-icon {
         width: 40px;
         height: 40px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -170,7 +170,7 @@
         border-top: 1px solid #e2e8f0;
     }
     .btn-view {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
         color: white;
         border: none;
         padding: 10px 25px;
@@ -181,7 +181,7 @@
     }
     .btn-view:hover {
         transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 5px 15px rgba(6, 182, 212, 0.4);
         color: white;
     }
     .empty-state {
@@ -286,7 +286,7 @@
                             break;
                     }
             ?>
-            <div class="booking-card" data-booking-id="<?= $row['id'] ?>">
+            <div class="booking-card scroll-reveal glass-card hover-lift-sm" data-booking-id="<?= $row['id'] ?>">
                 <div class="booking-header">
                     <div>
                         <div class="booking-ref">
@@ -329,7 +329,7 @@
                 </div>
                 
                 <div class="booking-actions">
-                    <button type="button" class="btn-view view_data" data-id="<?= $row['id'] ?>">
+                    <button type="button" class="btn-view view_data ripple btn-interactive hover-lift-sm" data-id="<?= $row['id'] ?>">
                         <i class="fas fa-eye"></i> View Details
                     </button>
                 </div>
@@ -338,10 +338,16 @@
                 endwhile;
             else:
             ?>
-            <div class="empty-state">
-                <i class="fas fa-inbox"></i>
-                <h3>No Bookings Yet</h3>
-                <p>You haven't made any bookings. Start by booking a driver!</p>
+            <div class="empty-state glass-card animate-bounceIn">
+                <div style="font-size: 5rem; margin-bottom: 20px;">
+                    <i class="fas fa-inbox floating" style="color: #cbd5e0;"></i>
+                </div>
+                <h3 style="color: #475569; font-weight: 700; margin-bottom: 15px;">No Bookings Yet</h3>
+                <p style="color: #94a3b8; margin-bottom: 30px;">You haven't made any bookings. Start by booking a driver!</p>
+                <a href="./?p=cab_available" class="home-cta-btn home-cta-primary ripple btn-interactive">
+                    <i class="fas fa-car"></i>
+                    <span>Book Your First Ride</span>
+                </a>
             </div>
             <?php endif; ?>
         </div>

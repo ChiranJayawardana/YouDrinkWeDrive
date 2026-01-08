@@ -6,9 +6,22 @@
         object-fit: cover;
         left: -7%;
         top: -12%;
+        border: 2px solid #06b6d4;
+        transition: all 0.3s ease;
+  }
+  .user-img:hover {
+        transform: scale(1.1);
   }
   .btn-rounded{
         border-radius: 50px;
+        transition: all 0.3s ease;
+  }
+  .btn-rounded:hover {
+        background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        color: white !important;
+  }
+  .main-header.navbar {
+        border-bottom: 3px solid #06b6d4 !important;
   }
 </style>
 <!-- Navbar -->

@@ -3,17 +3,20 @@
 	alert_toast("<?php echo $_settings->flashdata('success') ?>",'success')
 </script>
 <?php endif;?>
-<div class="card card-outline card-purple">
+<div class="card admin-modern-card">
 	<div class="card-header">
-		<h3 class="card-title">List of Cabs</h3>
+		<h3 class="card-title" style="display: flex; align-items: center; gap: 10px;">
+			<i class="fas fa-taxi"></i>
+			<span>List of Drivers</span>
+		</h3>
 		<div class="card-tools">
-			<a href="?page=cabs/manage_cab" class="btn btn-flat btn-success btn-sm"><span class="fas fa-plus"></span>  Add New Driver</a>
+			<a href="?page=cabs/manage_cab" class="btn btn-flat btn-sm btn-admin-primary"><span class="fas fa-plus"></span>  Add New Driver</a>
 		</div>
 	</div>
 	<div class="card-body">
 		<div class="container-fluid">
         <div class="container-fluid">
-			<table class="table table-bordered table-stripped table-hover">
+			<table class="table table-bordered table-stripped table-hover admin-modern-table">
 				<colgroup>
 					<col width="10%">
 					<col width="15%">
@@ -24,7 +27,7 @@
 					<col width="15%">
 				</colgroup>
 				<thead>
-				<tr class="bg-gradient-dark text-light">
+				<tr>
 						<th class="text-center">Driver ID</th>
 						<th class="text-center">Reg. Code</th>
 						<th class="text-center">Category</th>

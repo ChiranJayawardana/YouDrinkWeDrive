@@ -55,6 +55,12 @@
     }
   })
 </script>
+
+<!-- Advanced Interactions -->
+<script src="<?php echo base_url ?>assets/js/animations.js"></script>
+<script src="<?php echo base_url ?>assets/js/interactions.js"></script>
+<script src="<?php echo base_url ?>assets/js/form-enhancements.js"></script>
+
 <footer class="main-footer text-sm">
         <strong>© <?php echo date('Y') ?>. 
         <!-- <a href=""></a> -->
