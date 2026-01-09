@@ -113,10 +113,13 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
     }
     .custom-file-input-modern input[type="file"] {
         position: absolute;
+        top: 0;
+        left: 0;
         opacity: 0;
         width: 100%;
         height: 100%;
         cursor: pointer;
+        z-index: 2;
     }
     .custom-file-label-modern {
         display: block;
@@ -128,6 +131,8 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
         font-weight: 600;
         cursor: pointer;
         transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
     }
     .custom-file-label-modern:hover {
         transform: translateY(-2px);
@@ -180,7 +185,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
                 Manage Account Details
             </h4>
             
-            <form id="register-frm" action="" method="post">
+            <form id="register-frm" action="" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="id" value="<?= isset($id) ? $id : "" ?>">
                 
                 <div class="modern-form-group">
@@ -272,10 +277,20 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
                 <div class="modern-form-group">
                     <label>Profile Avatar</label>
                     <div class="avatar-section">
-                        <img src="<?php echo validate_image(isset($image_path) ? $image_path : "") ?>" 
+                        <img src="<?php 
+                            $img_path = isset($image_path) ? $image_path : "";
+                            // Remove query string if exists (in case old data has it)
+                            $img_path_clean = explode("?", $img_path)[0];
+                            // Get the validated image URL
+                            $img_url = validate_image($img_path_clean);
+                            // Add cache-busting parameter to force refresh
+                            $separator = strpos($img_url, '?') !== false ? '&' : '?';
+                            echo $img_url . $separator . 'v=' . time();
+                        ?>" 
                              alt="Avatar Preview" 
                              id="cimg" 
-                             class="avatar-preview">
+                             class="avatar-preview"
+                             onerror="this.src='<?php echo base_url ?>dist/img/no-image-available.png'">
                         <div class="file-upload-wrapper">
                             <div class="custom-file-input-modern">
                                 <input type="file" 
@@ -307,13 +322,18 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
 	        var reader = new FileReader();
 	        reader.onload = function (e) {
 	        	$('#cimg').attr('src', e.target.result);
-	        	_this.siblings('.custom-file-label-modern').html('<i class="fas fa-check"></i> ' + input.files[0].name)
+	        	_this.closest('.custom-file-input-modern').find('.custom-file-label-modern').html('<i class="fas fa-check"></i> ' + input.files[0].name)
 	        }
 
 	        reader.readAsDataURL(input.files[0]);
 	    }else{
-            $('#cimg').attr('src', "<?php echo validate_image(isset($image_path) ? $image_path : "") ?>");
-            _this.siblings('.custom-file-label-modern').html('<i class="fas fa-upload"></i> Choose Avatar Image')
+            var defaultImg = "<?php 
+                $img_path = isset($image_path) ? $image_path : "";
+                $img_path_clean = explode("?", $img_path)[0];
+                echo validate_image($img_path_clean);
+            ?>";
+            $('#cimg').attr('src', defaultImg + '?v=' + new Date().getTime());
+            _this.closest('.custom-file-input-modern').find('.custom-file-label-modern').html('<i class="fas fa-upload"></i> Choose Avatar Image')
         }
 	}
     $(function(){
@@ -343,6 +363,30 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
                 el.show('slow')
                 return false;
             }
+            // Check if file is selected and validate size
+            var fileInput = $('#customFile')[0];
+            if(fileInput && fileInput.files && fileInput.files.length > 0){
+                var file = fileInput.files[0];
+                var maxSize = 5 * 1024 * 1024; // 5MB
+                console.log('File selected:', file.name, file.size, 'bytes');
+                
+                if(file.size > maxSize){
+                    el.addClass('alert alert-danger err-msg').text('File size exceeds 5MB limit. Please choose a smaller image.');
+                    _this.prepend(el)
+                    el.show('slow')
+                    return false;
+                }
+                
+                // Validate file type
+                var validTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+                if(validTypes.indexOf(file.type) === -1){
+                    el.addClass('alert alert-danger err-msg').text('Invalid file type. Please choose a JPEG or PNG image.');
+                    _this.prepend(el)
+                    el.show('slow')
+                    return false;
+                }
+            }
+            
             start_loader();
             $.ajax({
                 url:_base_url_+"classes/Master.php?f=save_cab",
@@ -353,24 +397,76 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
                 method: 'POST',
                 type: 'POST',
                 dataType: 'json',
-                error:err=>{
-                    console.log(err)
-                    alert_toast("An error occured",'error');
+                error:function(xhr, status, error){
+                    console.log('AJAX Error:', xhr, status, error);
+                    console.log('Response Text:', xhr.responseText);
+                    var errorMsg = "An error occurred while updating your account.";
+                    
+                    if(xhr.responseText){
+                        // Try to extract JSON from response (in case there's HTML before it)
+                        var responseText = xhr.responseText.trim();
+                        // Look for JSON in the response
+                        var jsonMatch = responseText.match(/\{[\s\S]*\}/);
+                        if(jsonMatch){
+                            try{
+                                var resp = JSON.parse(jsonMatch[0]);
+                                if(resp.msg) errorMsg = resp.msg;
+                            }catch(e){
+                                console.error('JSON parse error:', e);
+                            }
+                        }else{
+                            // If no JSON found, check if it's an HTML error
+                            if(responseText.indexOf('<br />') !== -1 || responseText.indexOf('<b>') !== -1){
+                                errorMsg = "Server error occurred. Please check file size (max 5MB) and try again.";
+                            }
+                        }
+                    }
+                    alert_toast(errorMsg,'error');
                     end_loader();
                 },
                 success:function(resp){
+                    // Parse response if it's a string
+                    if(typeof resp == 'string'){
+                        // Try to extract JSON if there's HTML mixed in
+                        var jsonMatch = resp.match(/\{[\s\S]*\}/);
+                        if(jsonMatch){
+                            try{
+                                resp = JSON.parse(jsonMatch[0]);
+                            }catch(e){
+                                console.error('Failed to parse response:', e, resp);
+                                alert_toast("Invalid response from server",'error');
+                                end_loader();
+                                return;
+                            }
+                        }else{
+                            try{
+                                resp = JSON.parse(resp);
+                            }catch(e){
+                                console.error('Failed to parse response:', e, resp);
+                                alert_toast("Invalid response from server",'error');
+                                end_loader();
+                                return;
+                            }
+                        }
+                    }
+                    
                     if(typeof resp =='object' && resp.status == 'success'){
-                        location.reload();
+                        alert_toast(resp.msg || "Account successfully updated.",'success');
+                        // Reload page to show updated image in both form and navigation
+                        setTimeout(function(){
+                            // Force reload to ensure fresh data from database
+                            location.reload(true);
+                        }, 1500);
                     }else if(resp.status == 'failed' && !!resp.msg){   
                         el.addClass("alert alert-danger err-msg").text(resp.msg)
                         _this.prepend(el)
                         el.show('slow')
-                    }else{
-                        alert_toast("An error occured",'error');
                         end_loader();
-                        console.log(resp)
+                    }else{
+                        alert_toast("An error occurred",'error');
+                        end_loader();
+                        console.log('Unexpected response:', resp)
                     }
-                    end_loader();
                     $('html, body').scrollTop(0)
                 }
             })

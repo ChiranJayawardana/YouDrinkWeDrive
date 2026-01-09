@@ -75,117 +75,216 @@ Class Master extends DBConnection {
 
 	}
 	function save_cab(){
-		if(!empty($_POST['password']))
-			$_POST['password'] = md5($_POST['password']);
-		else
-			unset($_POST['password']);
-		if(empty($_POST['id'])){
-			$prefix = date('Ym-');
-			$code = sprintf("%'.05d",1);
-			while(true){
-				$check = $this->conn->query("SELECT * FROM `driver_list` where reg_code = '{$prefix}{$code}'")->num_rows;
-				if($check > 0){
-					$code = sprintf("%'.05d",ceil($code) + 1);
-				}else{
-					break;
+		// Initialize response
+		$resp = array('status' => 'failed', 'msg' => '');
+		
+		// Suppress any output that might interfere with JSON response
+		ob_start();
+		
+		try {
+			if(!empty($_POST['password']))
+				$_POST['password'] = md5($_POST['password']);
+			else
+				unset($_POST['password']);
+			if(empty($_POST['id'])){
+				$prefix = date('Ym-');
+				$code = sprintf("%'.05d",1);
+				while(true){
+					$check = $this->conn->query("SELECT * FROM `driver_list` where reg_code = '{$prefix}{$code}'")->num_rows;
+					if($check > 0){
+						$code = sprintf("%'.05d",ceil($code) + 1);
+					}else{
+						break;
+					}
+				}
+				$_POST['reg_code'] = $prefix.$code;
+			}
+
+			extract($_POST);
+			$data = "";
+			foreach($_POST as $k =>$v){
+				if(!in_array($k,array('id','oldpassword','img'))){
+					$v = $this->conn->real_escape_string($v);
+					if(!empty($data)) $data .=",";
+					$data .= " `{$k}`='{$v}' ";
 				}
 			}
-			$_POST['reg_code'] = $prefix.$code;
-		}
-
-
-		extract($_POST);
-		$data = "";
-		foreach($_POST as $k =>$v){
-			if(!in_array($k,array('id','oldpassword'))){
-				$v = $this->conn->real_escape_string($v);
-				if(!empty($data)) $data .=",";
-				$data .= " `{$k}`='{$v}' ";
+			
+			if(isset($oldpassword)){
+				$cur_pass = $this->conn->query("SELECT `password` from `driver_list` where id = '{$this->settings->userdata('id')}'")->fetch_array()[0];
+				if(md5($oldpassword) != $cur_pass){
+					$resp['status'] = 'failed';
+					$resp['msg'] = " Current Password is Incorrect.";
+					ob_end_clean();
+					return json_encode($resp);
+				}
 			}
+			
+			if(empty($id)){
+				$sql = "INSERT INTO `driver_list` set {$data} ";
+				$save = $this->conn->query($sql);
+			}else{
+				$sql = "UPDATE `driver_list` set {$data} where id = '{$id}' ";
+				$save = $this->conn->query($sql);
+			}
+			
+			if($save){
+				$resp['status'] = 'success';
+				$cid = empty($id) ? $this->conn->insert_id : $id;
+				$resp['id'] = $cid ;
+				if(empty($id))
+					$resp['msg'] = " New Driver successfully saved.";
+				else
+					$resp['msg'] = " Driver successfully updated.";
+					
+					// Handle image upload first
+					$image_uploaded = false;
+					$new_image_path = '';
+					if(isset($_FILES['img']) && $_FILES['img']['tmp_name'] != '' && $_FILES['img']['error'] == 0){
+						// Check if GD library is available
+						if(!function_exists('imagecreatetruecolor')){
+							$resp['msg'] .= " But Image failed to upload: GD library is not available.";
+						}else{
+							// Create directory if it doesn't exist
+							$upload_dir = base_app."uploads/drivers/";
+							if(!is_dir($upload_dir)){
+								if(!@mkdir($upload_dir, 0755, true)){
+									$resp['msg'] .= " But Image failed to upload: Could not create upload directory.";
+								}
+							}
+							
+							// Check if directory is writable
+							if(!is_writable($upload_dir)){
+								$resp['msg'] .= " But Image failed to upload: Upload directory is not writable.";
+							}else{
+							
+							$fname = 'uploads/drivers/'.$cid.'.png';
+							$dir_path = base_app. $fname;
+							$upload = $_FILES['img']['tmp_name'];
+							
+							// Check file size (max 5MB)
+							if($_FILES['img']['size'] > 5242880){
+								$resp['msg'] .= " But Image failed to upload: File size exceeds 5MB limit.";
+							}elseif($_FILES['img']['size'] == 0){
+								$resp['msg'] .= " But Image failed to upload: File is empty.";
+							}else{
+								$type = mime_content_type($upload);
+								$allowed = array('image/png','image/jpeg','image/jpg');
+								
+								if(!in_array($type,$allowed)){
+									$resp['msg'] .= " But Image failed to upload due to invalid file type. Only PNG and JPEG are allowed.";
+								}else{
+									$new_height = 200; 
+									$new_width = 200; 
+							
+									$image_info = @getimagesize($upload);
+									if($image_info === false){
+										$resp['msg'] .= " But Image failed to upload: Invalid image file.";
+									}else{
+										list($width, $height) = $image_info;
+										$t_image = @imagecreatetruecolor($new_width, $new_height);
+										
+										if($t_image === false){
+											$resp['msg'] .= " But Image failed to upload: Could not create image resource.";
+										}else{
+											imagealphablending($t_image, false);
+											imagesavealpha($t_image, true);
+											
+											// Create image from file
+											if($type == 'image/png'){
+												$gdImg = @imagecreatefrompng($upload);
+											}else{
+												$gdImg = @imagecreatefromjpeg($upload);
+											}
+											
+											if($gdImg === false){
+												$resp['msg'] .= " But Image failed to upload: Could not process image file.";
+												imagedestroy($t_image);
+											}else{
+												imagecopyresampled($t_image, $gdImg, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
+												
+												// Delete old file if exists
+												if(is_file($dir_path))
+													@unlink($dir_path);
+												
+												$uploaded_img = @imagepng($t_image,$dir_path);
+												imagedestroy($gdImg);
+												imagedestroy($t_image);
+												
+												if($uploaded_img){
+													// Store only the file path without query string
+													$update_sql = "UPDATE driver_list set `image_path` = '".$this->conn->real_escape_string($fname)."' where id = '{$cid}' ";
+													$this->conn->query($update_sql);
+													$image_uploaded = true;
+													$new_image_path = $fname;
+													$resp['msg'] .= " Image uploaded successfully.";
+												}else{
+													$resp['msg'] .= " But Image failed to upload: Could not save image file.";
+												}
+											}
+										}
+									}
+								}
+							}
+							}
+						}
+					}elseif(isset($_FILES['img']) && $_FILES['img']['error'] != 0){
+						// Handle file upload errors
+						$upload_errors = array(
+							1 => 'File exceeds upload_max_filesize',
+							2 => 'File exceeds MAX_FILE_SIZE',
+							3 => 'File was only partially uploaded',
+							4 => 'No file was uploaded',
+							6 => 'Missing temporary folder',
+							7 => 'Failed to write file to disk',
+							8 => 'A PHP extension stopped the file upload'
+						);
+						$error_code = $_FILES['img']['error'];
+						$error_msg = isset($upload_errors[$error_code]) ? $upload_errors[$error_code] : 'Unknown upload error';
+						$resp['msg'] .= " But Image failed to upload: ".$error_msg.".";
+					}
+					
+					// Update session if it's the logged-in driver (after image upload)
+					if($this->settings->userdata('id')  == $cid && $this->settings->userdata('login_type') == 3){
+						// Update session with POST data (excluding password and img)
+						foreach($_POST as $k => $v){
+							if(!in_array($k,['password', 'oldpassword', 'cpassword', 'img']))
+								$this->settings->set_userdata($k,$v);
+						}
+						
+						// Always refresh ALL driver data from database to ensure session is up-to-date
+						$driver_data = $this->conn->query("SELECT * FROM driver_list where id = '{$cid}'")->fetch_assoc();
+						if($driver_data){
+							foreach($driver_data as $k => $v){
+								if(!is_numeric($k) && $k != 'password'){
+									$this->settings->set_userdata($k, $v);
+								}
+							}
+						}
+						
+						$resp['msg'] = " Account successfully updated.";
+					}
+			}else{
+				$resp['status'] = 'failed';
+				$resp['msg'] = "Database error: ".$this->conn->error;
+				$resp['err'] = $this->conn->error."[{$sql}]";
+			}
+		} catch (Exception $e) {
+			$resp['status'] = 'failed';
+			$resp['msg'] = "Error: ".$e->getMessage();
 		}
 		
-		if(isset($oldpassword)){
-			$cur_pass = $this->conn->query("SELECT `password` from `driver_list` where id = '{$this->settings->userdata('id')}'")->fetch_array()[0];
-			if(md5($oldpassword) != $cur_pass){
-				$resp['status'] = 'failed';
-				$resp['msg'] = " Current Password is Incorrect.";
-				return json_encode($resp);
-				exit;
-			}
+		// Clean any output and return JSON
+		$output = ob_get_clean();
+		// If there was any output (errors), log it but don't include in response
+		if(!empty($output) && $resp['status'] == 'success'){
+			error_log("save_cab output captured: ".$output);
 		}
-		if(empty($id)){
-			$sql = "INSERT INTO `driver_list` set {$data} ";
-			$save = $this->conn->query($sql);
-		}else{
-			$sql = "UPDATE `driver_list` set {$data} where id = '{$id}' ";
-			$save = $this->conn->query($sql);
-		}
-		if($save){
-			$resp['status'] = 'success';
-			$cid = empty($id) ? $this->conn->insert_id : $id;
-			$resp['id'] = $cid ;
-			if(empty($id))
-				$resp['msg'] = " New Driver successfully saved.";
-			else
-				$resp['msg'] = " Driver successfully updated.";
-				if($this->settings->userdata('id')  == $cid && $this->settings->userdata('login_type') == 3){
-					foreach($_POST as $k => $v){
-						if(!in_array($k,['password']))
-						$this->settings->set_userdata($k,$v);
-					}
-					$resp['msg'] = " Account successfully updated.";
-				}
-				
-				// Handle image upload - FIXED VERSION
-				if(isset($_FILES['img']) && $_FILES['img']['tmp_name'] != ''){
-					// Create directory if it doesn't exist - FIXED TYPO: dirvers -> drivers
-					if(!is_dir(base_app."uploads/drivers/"))
-						mkdir(base_app."uploads/drivers/", 0755, true);
-					
-					$fname = 'uploads/drivers/'.$cid.'.png';
-					$dir_path = base_app. $fname;
-					$upload = $_FILES['img']['tmp_name'];
-					$type = mime_content_type($upload);
-					$allowed = array('image/png','image/jpeg');
-					
-					if(!in_array($type,$allowed)){
-						$resp['msg'].=" But Image failed to upload due to invalid file type.";
-					}else{
-						$new_height = 200; 
-						$new_width = 200; 
-				
-						list($width, $height) = getimagesize($upload);
-						$t_image = imagecreatetruecolor($new_width, $new_height);
-						imagealphablending($t_image, false);
-						imagesavealpha($t_image, true);
-						$gdImg = ($type == 'image/png')? imagecreatefrompng($upload) : imagecreatefromjpeg($upload);
-						imagecopyresampled($t_image, $gdImg, 0, 0, 0, 0, $new_width, $new_height, $width, $height);
-						
-						if($gdImg){
-							if(is_file($dir_path))
-								unlink($dir_path);
-							$uploaded_img = imagepng($t_image,$dir_path);
-							imagedestroy($gdImg);
-							imagedestroy($t_image);
-						}else{
-							$resp['msg'].=" But Image failed to upload due to unknown reason.";
-						}
-					}
-					
-					if(isset($uploaded_img)){
-						$this->conn->query("UPDATE driver_list set `image_path` = CONCAT('{$fname}','?v=',unix_timestamp(CURRENT_TIMESTAMP)) where id = '{$cid}' ");
-						if($id == $this->settings->userdata('id')){
-							$this->settings->set_userdata('avatar',$fname);
-						}
-					}
-				}
-		}else{
-			$resp['status'] = 'failed';
-			$resp['err'] = $this->conn->error."[{$sql}]";
-		}
+		
 		if(isset($resp['msg']) && $resp['status'] == 'success'){
 			$this->settings->set_flashdata('success',$resp['msg']);
 		}
+		
 		return json_encode($resp);
 	}
 	
@@ -286,7 +385,16 @@ switch ($action) {
 		echo $Master->delete_category();
 	break;
 	case 'save_cab':
+		// Set JSON header before any output
+		header('Content-Type: application/json');
+		// Suppress error display for AJAX requests
+		$old_error_reporting = error_reporting(E_ALL);
+		$old_display_errors = ini_get('display_errors');
+		ini_set('display_errors', 0);
 		echo $Master->save_cab();
+		// Restore error settings
+		error_reporting($old_error_reporting);
+		ini_set('display_errors', $old_display_errors);
 	break;
 	case 'delete_cab':
 		echo $Master->delete_cab();
