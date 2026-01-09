@@ -10,10 +10,13 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 ?>
 <style>
 	#cimg{
-		width: 15vw;
-		height: 20vh;
-		object-fit:scale-down;
-		object-position:center center;
+		width: 200px;
+		height: 200px;
+		object-fit: cover;
+		object-position: center center;
+		border-radius: 12px;
+		border: 3px solid var(--admin-primary);
+		box-shadow: 0 4px 15px rgba(147, 51, 234, 0.2);
 	}
 </style>
 <div class="card card-outline card-purple rounded-0">

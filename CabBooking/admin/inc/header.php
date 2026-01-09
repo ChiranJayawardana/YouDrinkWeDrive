@@ -31,6 +31,212 @@
     <link rel="stylesheet" href="<?php echo base_url ?>dist/css/custom.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="<?php echo base_url ?>plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+    <style>
+        :root {
+            --admin-primary: #9333ea;
+            --admin-primary-light: #a855f7;
+            --admin-primary-dark: #7e22ce;
+            --admin-gradient: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+        }
+        /* Modern Admin Theme Overrides */
+        .bg-gradient-purple {
+            background: var(--admin-gradient) !important;
+        }
+        .card-purple {
+            border-top-color: var(--admin-primary) !important;
+        }
+        .btn-primary {
+            background: var(--admin-gradient) !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(147, 51, 234, 0.3) !important;
+            transition: all 0.3s ease !important;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 6px 20px rgba(147, 51, 234, 0.4) !important;
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3) !important;
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+            border: none !important;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3) !important;
+        }
+        .form-control:focus, .custom-select:focus {
+            border-color: var(--admin-primary) !important;
+            box-shadow: 0 0 0 0.2rem rgba(147, 51, 234, 0.25) !important;
+        }
+        .info-box {
+            border-radius: 12px !important;
+            transition: all 0.3s ease !important;
+            border: none !important;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08) !important;
+        }
+        .info-box:hover {
+            transform: translateY(-5px) !important;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+        }
+        .info-box-icon {
+            border-radius: 12px 0 0 12px !important;
+        }
+        .card {
+            border-radius: 15px !important;
+            border: none !important;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08) !important;
+        }
+        .card-header {
+            background: var(--admin-gradient) !important;
+            color: white !important;
+            border-radius: 15px 15px 0 0 !important;
+            border: none !important;
+            padding: 1.25rem 1.5rem !important;
+        }
+        .card-title {
+            color: white !important;
+            font-weight: 600 !important;
+            margin: 0 !important;
+        }
+        /* Modern Form Styling */
+        .form-group label.control-label {
+            font-weight: 600 !important;
+            color: #4a5568 !important;
+            margin-bottom: 0.5rem !important;
+            font-size: 0.875rem !important;
+            text-transform: uppercase !important;
+            letter-spacing: 0.5px !important;
+        }
+        .form-control, .custom-select {
+            border-radius: 8px !important;
+            border: 2px solid #e2e8f0 !important;
+            padding: 0.75rem 1rem !important;
+            transition: all 0.3s ease !important;
+            font-size: 0.95rem !important;
+        }
+        .form-control:focus, .custom-select:focus {
+            border-color: var(--admin-primary) !important;
+            box-shadow: 0 0 0 0.2rem rgba(147, 51, 234, 0.25) !important;
+            outline: none !important;
+        }
+        .form-control.rounded-0 {
+            border-radius: 8px !important;
+        }
+        .card-body {
+            padding: 2rem !important;
+        }
+        .card-footer {
+            background: #f8f9fa !important;
+            border-top: 1px solid #e2e8f0 !important;
+            border-radius: 0 0 15px 15px !important;
+            padding: 1.25rem 1.5rem !important;
+        }
+        .btn-flat {
+            border-radius: 8px !important;
+            padding: 0.625rem 1.5rem !important;
+            font-weight: 600 !important;
+            transition: all 0.3s ease !important;
+            border: none !important;
+        }
+        .btn-flat:hover {
+            transform: translateY(-2px) !important;
+        }
+        .custom-file-label {
+            border-radius: 8px !important;
+            border: 2px solid #e2e8f0 !important;
+            padding: 0.75rem 1rem !important;
+        }
+        .custom-file-input:focus ~ .custom-file-label {
+            border-color: var(--admin-primary) !important;
+            box-shadow: 0 0 0 0.2rem rgba(147, 51, 234, 0.25) !important;
+        }
+        textarea.form-control {
+            min-height: 100px !important;
+            resize: vertical !important;
+        }
+        .input-group .form-control {
+            border-right: none !important;
+        }
+        .input-group-append .btn {
+            border-left: none !important;
+            border-color: #e2e8f0 !important;
+            background: #f8f9fa !important;
+        }
+        .input-group-append .btn:hover {
+            background: #e2e8f0 !important;
+            color: var(--admin-primary) !important;
+        }
+        /* Modern Table Styling */
+        .table {
+            border-radius: 12px !important;
+            overflow: hidden !important;
+        }
+        .table thead tr {
+            background: var(--admin-gradient) !important;
+            color: white !important;
+        }
+        .table thead th {
+            border: none !important;
+            font-weight: 600 !important;
+            text-transform: uppercase !important;
+            font-size: 0.75rem !important;
+            letter-spacing: 0.5px !important;
+            padding: 1rem !important;
+        }
+        .table tbody tr {
+            transition: all 0.2s ease !important;
+        }
+        .table tbody tr:hover {
+            background: #f8f9fa !important;
+            transform: scale(1.01) !important;
+        }
+        .table tbody td {
+            padding: 1rem !important;
+            vertical-align: middle !important;
+            border-color: #e2e8f0 !important;
+        }
+        .table-bordered {
+            border: none !important;
+        }
+        .table-bordered thead th {
+            border-bottom: 2px solid rgba(255,255,255,0.3) !important;
+        }
+        .btn-sm {
+            border-radius: 6px !important;
+            padding: 0.375rem 0.875rem !important;
+            font-weight: 500 !important;
+            transition: all 0.3s ease !important;
+        }
+        .btn-sm:hover {
+            transform: translateY(-2px) !important;
+        }
+        .card-tools .btn {
+            margin-left: 0.5rem !important;
+        }
+        /* Badge Styling */
+        .badge {
+            padding: 0.5rem 0.75rem !important;
+            border-radius: 6px !important;
+            font-weight: 600 !important;
+            font-size: 0.75rem !important;
+        }
+        .badge-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        }
+        .badge-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        }
+        .badge-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+        }
+        .badge-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+        }
+        .badge-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+        }
+    </style>
     <!-- Daterange picker -->
     <link rel="stylesheet" href="<?php echo base_url ?>plugins/daterangepicker/daterangepicker.css">
     <!-- summernote -->

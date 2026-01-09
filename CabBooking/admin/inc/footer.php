@@ -55,15 +55,118 @@
     }
   })
 </script>
-<footer class="main-footer text-sm">
-        <strong>© <?php echo date('Y') ?>. 
-        <!-- <a href=""></a> -->
-        </strong>
-        All rights reserved.
-        <div class="float-right d-none d-sm-inline-block">
-        <p class="m-0 text-center text-dark">Developed By: Chiran Jayawardana</p>
-        </div>
-      </footer>
+<footer class="main-footer">
+  <style>
+    .main-footer {
+      background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%) !important;
+      color: white !important;
+      padding: 2rem 1.5rem !important;
+      margin-top: 3rem !important;
+      border-top: none !important;
+      box-shadow: 0 -4px 20px rgba(147, 51, 234, 0.3) !important;
+      position: relative;
+      overflow: hidden;
+    }
+    .main-footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><defs><pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse"><path d="M 100 0 L 0 0 0 100" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+      opacity: 0.3;
+      pointer-events: none;
+    }
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .footer-text {
+      margin: 0;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.95);
+      line-height: 1.6;
+    }
+    .footer-text strong {
+      font-weight: 700;
+      color: white;
+    }
+    .footer-divider {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.3);
+      display: inline-block;
+      margin: 0 0.5rem;
+    }
+    .footer-icon {
+      margin-right: 0.5rem;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+    .footer-link {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 500;
+    }
+    .footer-link:hover {
+      color: white;
+      text-decoration: underline;
+      transform: translateY(-1px);
+    }
+    @media (max-width: 768px) {
+      .footer-content {
+        flex-direction: column;
+        text-align: center;
+      }
+      .footer-left,
+      .footer-right {
+        justify-content: center;
+        width: 100%;
+      }
+      .footer-divider {
+        display: none;
+      }
+      .main-footer {
+        padding: 1.5rem 1rem !important;
+      }
+    }
+  </style>
+  <div class="footer-content">
+    <div class="footer-left">
+      <p class="footer-text">
+        <strong>© <?php echo date('Y') ?> <?php echo $_settings->info('name') ?></strong>
+        <span class="footer-divider"></span>
+        <span>All rights reserved.</span>
+      </p>
+    </div>
+    <div class="footer-right">
+      <p class="footer-text">
+        <i class="fas fa-code footer-icon"></i>
+        <span>Developed By: <strong>Chiran Jayawardana</strong></span>
+      </p>
+    </div>
+  </div>
+</footer>
     </div>
     <!-- ./wrapper -->
    

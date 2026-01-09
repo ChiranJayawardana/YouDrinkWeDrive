@@ -1,5 +1,3 @@
-<h1 class=""><i class="fas fa-taxi"></i> <?php echo $_settings->info('name') ?></h1>
-<hr>
 <style>
   #cover_img_dash{
     width:100%;
@@ -7,7 +5,50 @@
     object-fit:cover;
     object-position:bottom center;
   }
+  .dashboard-hero {
+    background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    color: white;
+    box-shadow: 0 8px 30px rgba(147, 51, 234, 0.3);
+  }
+  .dashboard-hero h1 {
+    color: white;
+    margin: 0;
+    font-weight: 700;
+    font-size: 2rem;
+  }
+  .dashboard-hero i {
+    margin-right: 1rem;
+    font-size: 2.5rem;
+  }
+  .info-box-icon {
+    font-size: 2rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+  .info-box-content {
+    padding: 1.25rem !important;
+  }
+  .info-box-text {
+    font-size: 0.875rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    color: #6b7280 !important;
+  }
+  .info-box-number {
+    font-size: 2rem !important;
+    font-weight: 700 !important;
+    color: #1f2937 !important;
+    margin-top: 0.5rem !important;
+  }
 </style>
+<div class="dashboard-hero">
+  <h1><i class="fas fa-taxi"></i> <?php echo $_settings->info('name') ?> - Admin Dashboard</h1>
+</div>
 <div class="row">
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box">
