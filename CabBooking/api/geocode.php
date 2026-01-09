@@ -29,19 +29,21 @@ if (strlen($query) < 2) {
 }
 
 $query = urlencode($query);
-$url = "https://nominatim.openstreetmap.org/search?format=json&q={$query}&limit=5&addressdetails=1";
+// Add country code to improve results for Sri Lanka
+$url = "https://nominatim.openstreetmap.org/search?format=json&q={$query}&limit=5&addressdetails=1&countrycodes=lk&dedupe=1";
 
 // Initialize cURL
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_USERAGENT, 'CabBookingSystem/1.0 (Contact: admin@example.com)');
+curl_setopt($ch, CURLOPT_USERAGENT, 'CabBookingSystem/1.0 (https://example.com/contact)');
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Accept: application/json',
     'Accept-Language: en-US,en;q=0.9'
 ]);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
 
 $response = curl_exec($ch);
 $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -57,7 +59,11 @@ curl_close($ch);
 
 if ($httpCode !== 200) {
     http_response_code($httpCode);
-    echo json_encode(['error' => 'API returned status code: ' . $httpCode]);
+    if ($httpCode === 429) {
+        echo json_encode(['error' => 'Rate limit exceeded. Please wait a moment before searching again.']);
+    } else {
+        echo json_encode(['error' => 'API returned status code: ' . $httpCode]);
+    }
     exit;
 }
 

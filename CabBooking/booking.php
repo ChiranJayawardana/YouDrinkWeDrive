@@ -448,6 +448,9 @@ $(document).ready(function(){
             return;
         }
         
+        // Get the associated input field
+        const inputField = suggestionsBox.closest('.input-wrapper').find('input[type="text"]');
+        
         // Clear any previous timeout
         if (suggestionsBox.data('timeout')) {
             clearTimeout(suggestionsBox.data('timeout'));
@@ -455,16 +458,22 @@ $(document).ready(function(){
         
         // Debounce the API call
         const timeout = setTimeout(function() {
-            // Get base path from current location
-            const pathParts = window.location.pathname.split('/').filter(p => p);
-            const basePath = '/' + (pathParts.length > 0 ? pathParts[0] : 'CabBooking') + '/';
-            const apiUrl = window.location.origin + basePath + 'api/geocode.php';
+            // Check if query has changed (user continued typing)
+            const currentValue = inputField.val().trim();
+            if (currentValue !== query) {
+                return; // Query changed, skip this request
+            }
+            
+            // Use the base URL from the global variable, or construct from current location
+            const baseUrl = (typeof _base_url_ !== 'undefined' ? _base_url_ : window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, '/'));
+            const apiUrl = baseUrl + 'api/geocode.php';
             
             $.ajax({
                 url: `${apiUrl}?q=${encodeURIComponent(query)}`,
                 method: 'GET',
                 dataType: 'json',
-                timeout: 10000,
+                timeout: 25000,
+                cache: false,
                 beforeSend: function() {
                     suggestionsBox.html('<div class="autocomplete-item" style="cursor: default; color: #a0aec0;"><i class="fas fa-spinner fa-spin"></i> Searching...</div>');
                     suggestionsBox.addClass('show');
@@ -505,25 +514,38 @@ $(document).ready(function(){
                     });
                 },
                 error: function(xhr, status, error) {
-                    console.error('Geocoding error:', status, error);
+                    console.error('Geocoding error:', status, error, xhr);
                     let errorMsg = 'Error loading suggestions';
                     
                     if (status === 'timeout') {
                         errorMsg = 'Request timed out. Please try again.';
                     } else if (xhr.status === 0) {
                         errorMsg = 'Network error. Please check your connection.';
+                    } else if (xhr.status === 429) {
+                        errorMsg = 'Too many requests. Please wait a moment.';
+                    } else if (xhr.status >= 500) {
+                        errorMsg = 'Server error. Please try again later.';
+                    } else if (xhr.responseJSON && xhr.responseJSON.error) {
+                        errorMsg = xhr.responseJSON.error;
                     }
                     
-                    suggestionsBox.html(`<div class="autocomplete-item" style="cursor: default; color: #ef4444;"><i class="fas fa-exclamation-circle"></i> ${errorMsg}</div>`);
-                    suggestionsBox.addClass('show');
-                    suggestionsBox.css({
-                        'display': 'block',
-                        'z-index': '10060',
-                        'position': 'absolute'
-                    });
+                    // Only show error if query is still the same (user hasn't changed it)
+                    const currentQuery = inputField.val().trim();
+                    if (currentQuery === query && currentQuery.length > 2) {
+                        suggestionsBox.html(`<div class="autocomplete-item" style="cursor: default; color: #ef4444;"><i class="fas fa-exclamation-circle"></i> ${errorMsg}</div>`);
+                        suggestionsBox.addClass('show');
+                        suggestionsBox.css({
+                            'display': 'block',
+                            'z-index': '10060',
+                            'position': 'absolute'
+                        });
+                    } else {
+                        // Query changed or cleared, hide suggestions
+                        suggestionsBox.empty().hide();
+                    }
                 }
             });
-        }, 300); // 300ms debounce
+        }, 500); // 500ms debounce to reduce API calls and avoid rate limiting
         
         // Store timeout reference
         suggestionsBox.data('timeout', timeout);

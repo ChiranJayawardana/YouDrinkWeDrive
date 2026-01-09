@@ -1,7 +1,20 @@
 <IfModule mod_rewrite.c>
 Header set Access-Control-Allow-Origin "*"
 RewriteEngine on
+RewriteBase /CabBooking/
+
+# Exclude API directory from rewrite rules - must come first
+RewriteCond %{REQUEST_URI} ^/CabBooking/api/ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/api/ [NC]
+RewriteRule ^ - [L]
+
+# Exclude plugin and asset directories
+RewriteCond %{REQUEST_URI} ^/CabBooking/(plugins|dist|assets|uploads|classes|tmp)/ [NC,OR]
+RewriteCond %{REQUEST_URI} ^/(plugins|dist|assets|uploads|classes|tmp)/ [NC]
+RewriteRule ^ - [L]
+
+# Continue with normal rewrite rules for other requests
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$    /index.php/$2/?page=$1   [L]
+RewriteRule ^(.*)$ index.php/?page=$1 [L,QSA]
 </IfModule>
