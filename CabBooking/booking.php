@@ -20,6 +20,8 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         padding: 35px;
         box-shadow: 0 5px 20px rgba(0,0,0,0.08);
         margin-bottom: 25px;
+        position: relative;
+        overflow: visible;
     }
     .form-section-title {
         font-size: 1.1rem;
@@ -33,12 +35,22 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         border-bottom: 2px solid #e2e8f0;
     }
     .form-section-title i {
-        color: #667eea;
+        color: #9333ea;
         font-size: 1.3rem;
     }
     .modern-form-group {
         margin-bottom: 25px;
         position: relative;
+        z-index: 1;
+    }
+    
+    /* When inside modal, ensure proper stacking */
+    .modal .modern-form-group {
+        z-index: auto;
+    }
+    
+    .modal .modern-form-group .input-wrapper {
+        z-index: 10050;
     }
     .modern-form-group label {
         display: flex;
@@ -55,6 +67,17 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
     }
     .input-wrapper {
         position: relative;
+        z-index: 1;
+    }
+    
+    /* Ensure autocomplete suggestions appear above modal */
+    .modal .input-wrapper {
+        z-index: auto;
+    }
+    
+    .modal .autocomplete-suggestions {
+        z-index: 10060 !important;
+        position: absolute !important;
     }
     .input-icon {
         position: absolute;
@@ -75,9 +98,9 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
     }
     .modern-input:focus {
         outline: none;
-        border-color: #667eea;
+        border-color: #a855f7;
         background: white;
-        box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
     }
     .modern-input:read-only {
         background: #edf2f7;
@@ -86,19 +109,27 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         font-weight: 600;
     }
     .autocomplete-suggestions {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: white;
-        border: 2px solid #e2e8f0;
-        border-top: none;
-        border-radius: 0 0 12px 12px;
-        max-height: 200px;
-        overflow-y: auto;
-        z-index: 1000;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        margin-top: -2px;
+        position: absolute !important;
+        top: 100% !important;
+        left: 0 !important;
+        right: 0 !important;
+        background: white !important;
+        border: 2px solid #e2e8f0 !important;
+        border-top: none !important;
+        border-radius: 0 0 12px 12px !important;
+        max-height: 200px !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        z-index: 10060 !important;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1) !important;
+        margin-top: -2px !important;
+        display: none !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    .autocomplete-suggestions.show {
+        display: block !important;
     }
     .autocomplete-item {
         padding: 12px 15px;
@@ -113,11 +144,11 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         border-bottom: none;
     }
     .autocomplete-item:hover {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         color: white;
     }
     .autocomplete-item i {
-        color: #667eea;
+        color: #9333ea;
         font-size: 0.9rem;
     }
     .autocomplete-item:hover i {
@@ -130,7 +161,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         margin-top: 20px;
     }
     .info-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         border-radius: 15px;
         padding: 20px;
         color: white;
@@ -157,7 +188,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         text-align: center;
     }
     .submit-btn {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         color: white;
         border: none;
         padding: 16px 50px;
@@ -166,14 +197,15 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         font-weight: 700;
         cursor: pointer;
         transition: all 0.3s ease;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        box-shadow: 0 5px 15px rgba(147, 51, 234, 0.3);
         display: inline-flex;
         align-items: center;
         gap: 10px;
     }
     .submit-btn:hover {
+        background: linear-gradient(135deg, #7e22ce 0%, #9333ea 100%);
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
     }
     .submit-btn:active {
         transform: translateY(0);
@@ -182,6 +214,62 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         opacity: 0.6;
         cursor: not-allowed;
     }
+    /* Modal-specific fixes for autocomplete visibility */
+    #uni_modal {
+        z-index: 1050;
+    }
+    
+    #uni_modal .modal-content {
+        overflow: visible !important;
+        position: relative !important;
+    }
+    
+    #uni_modal .modal-body {
+        overflow: visible !important;
+        position: relative !important;
+    }
+    
+    #uni_modal .modal-dialog {
+        overflow: visible !important;
+        position: relative !important;
+    }
+    
+    #uni_modal .booking-form-container {
+        overflow: visible !important;
+        position: relative !important;
+    }
+    
+    #uni_modal .form-section {
+        overflow: visible !important;
+        position: relative !important;
+    }
+    
+    #uni_modal .modern-form-group {
+        overflow: visible !important;
+        position: relative !important;
+    }
+    
+    #uni_modal .input-wrapper {
+        overflow: visible !important;
+        position: relative !important;
+    }
+    
+    /* Ensure autocomplete is always on top of modal and backdrop */
+    #uni_modal .autocomplete-suggestions {
+        position: absolute !important;
+        z-index: 10060 !important;
+        display: none !important;
+    }
+    
+    #uni_modal .autocomplete-suggestions.show {
+        display: block !important;
+    }
+    
+    /* Ensure modal backdrop doesn't cover suggestions */
+    .modal-backdrop {
+        z-index: 1040 !important;
+    }
+    
     @media (max-width: 768px) {
         .form-section {
             padding: 25px 20px;
@@ -346,55 +434,155 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 
 <script>
 $(document).ready(function(){
+    // Initialize autocomplete when modal is shown
+    $(document).on('shown.bs.modal', '#uni_modal', function() {
+        // Re-initialize autocomplete for fields in the modal
+        setTimeout(function() {
+            $('#pickup_zone, #drop_zone').trigger('input');
+        }, 100);
+    });
+    
     function fetchPlaces(query, suggestionsBox) {
-        $.ajax({
-            url: `https://nominatim.openstreetmap.org/search?format=json&q=${query}`,
-            method: 'GET',
-            success: function(data) {
-                let suggestions = '';
-                if (data.length > 0) {
-                    data.slice(0, 5).forEach(function(place) {
-                        suggestions += `<div class="autocomplete-item" data-lat="${place.lat}" data-lon="${place.lon}">
-                            <i class="fas fa-map-pin"></i>
-                            <span>${place.display_name}</span>
-                        </div>`;
+        if (!suggestionsBox || suggestionsBox.length === 0) {
+            console.log('Suggestions box not found');
+            return;
+        }
+        
+        // Clear any previous timeout
+        if (suggestionsBox.data('timeout')) {
+            clearTimeout(suggestionsBox.data('timeout'));
+        }
+        
+        // Debounce the API call
+        const timeout = setTimeout(function() {
+            // Get base path from current location
+            const pathParts = window.location.pathname.split('/').filter(p => p);
+            const basePath = '/' + (pathParts.length > 0 ? pathParts[0] : 'CabBooking') + '/';
+            const apiUrl = window.location.origin + basePath + 'api/geocode.php';
+            
+            $.ajax({
+                url: `${apiUrl}?q=${encodeURIComponent(query)}`,
+                method: 'GET',
+                dataType: 'json',
+                timeout: 10000,
+                beforeSend: function() {
+                    suggestionsBox.html('<div class="autocomplete-item" style="cursor: default; color: #a0aec0;"><i class="fas fa-spinner fa-spin"></i> Searching...</div>');
+                    suggestionsBox.addClass('show');
+                    suggestionsBox.css({
+                        'display': 'block',
+                        'z-index': '10060',
+                        'position': 'absolute',
+                        'visibility': 'visible',
+                        'opacity': '1'
                     });
-                } else {
-                    suggestions = '<div class="autocomplete-item" style="cursor: default; color: #a0aec0;"><i class="fas fa-info-circle"></i> No results found</div>';
+                },
+                success: function(data) {
+                    let suggestions = '';
+                    
+                    // Check if response has error
+                    if (data && data.error) {
+                        suggestions = `<div class="autocomplete-item" style="cursor: default; color: #ef4444;"><i class="fas fa-exclamation-circle"></i> ${data.error}</div>`;
+                    } else if (data && Array.isArray(data) && data.length > 0) {
+                        data.slice(0, 5).forEach(function(place) {
+                            suggestions += `<div class="autocomplete-item" data-lat="${place.lat}" data-lon="${place.lon}">
+                                <i class="fas fa-map-pin"></i>
+                                <span>${place.display_name}</span>
+                            </div>`;
+                        });
+                    } else {
+                        suggestions = '<div class="autocomplete-item" style="cursor: default; color: #a0aec0;"><i class="fas fa-info-circle"></i> No results found</div>';
+                    }
+                    
+                    suggestionsBox.html(suggestions);
+                    // Force visibility with class and inline styles
+                    suggestionsBox.addClass('show');
+                    suggestionsBox.css({
+                        'display': 'block',
+                        'z-index': '10060',
+                        'position': 'absolute',
+                        'visibility': 'visible',
+                        'opacity': '1'
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error('Geocoding error:', status, error);
+                    let errorMsg = 'Error loading suggestions';
+                    
+                    if (status === 'timeout') {
+                        errorMsg = 'Request timed out. Please try again.';
+                    } else if (xhr.status === 0) {
+                        errorMsg = 'Network error. Please check your connection.';
+                    }
+                    
+                    suggestionsBox.html(`<div class="autocomplete-item" style="cursor: default; color: #ef4444;"><i class="fas fa-exclamation-circle"></i> ${errorMsg}</div>`);
+                    suggestionsBox.addClass('show');
+                    suggestionsBox.css({
+                        'display': 'block',
+                        'z-index': '10060',
+                        'position': 'absolute'
+                    });
                 }
-                suggestionsBox.html(suggestions);
-            }
-        });
+            });
+        }, 300); // 300ms debounce
+        
+        // Store timeout reference
+        suggestionsBox.data('timeout', timeout);
     }
 
     // Fetch places when typing in the pickup location field
-    $(document).on('input', '#pickup_zone', function() {
-        const query = $(this).val();
+    $(document).on('input keyup', '#pickup_zone', function(e) {
+        // Don't trigger on arrow keys, enter, etc.
+        if ([37, 38, 39, 40, 13, 27].indexOf(e.keyCode) !== -1) {
+            return;
+        }
+        
+        const query = $(this).val().trim();
         const suggestionsBox = $('#pickup_suggestions');
+        
         if (query.length > 2) {
             fetchPlaces(query, suggestionsBox);
-            suggestionsBox.show();
         } else {
             suggestionsBox.empty().hide();
         }
     });
 
     // Fetch places when typing in the drop-off location field
-    $(document).on('input', '#drop_zone', function() {
-        const query = $(this).val();
+    $(document).on('input keyup', '#drop_zone', function(e) {
+        // Don't trigger on arrow keys, enter, etc.
+        if ([37, 38, 39, 40, 13, 27].indexOf(e.keyCode) !== -1) {
+            return;
+        }
+        
+        const query = $(this).val().trim();
         const suggestionsBox = $('#drop_suggestions');
+        
         if (query.length > 2) {
             fetchPlaces(query, suggestionsBox);
-            suggestionsBox.show();
         } else {
-            suggestionsBox.empty().hide();
+            suggestionsBox.removeClass('show').empty().hide();
         }
     });
     
     // Hide suggestions when clicking outside
     $(document).on('click', function(e) {
-        if (!$(e.target).closest('.input-wrapper').length) {
-            $('.autocomplete-suggestions').hide();
+        if (!$(e.target).closest('.input-wrapper').length && 
+            !$(e.target).hasClass('autocomplete-item') && 
+            !$(e.target).closest('.autocomplete-item').length &&
+            !$(e.target).is('input')) {
+            $('.autocomplete-suggestions').removeClass('show').hide();
+        }
+    });
+    
+    // Ensure suggestions are visible on focus
+    $(document).on('focus', '#pickup_zone, #drop_zone', function() {
+        const suggestionsBox = $(this).closest('.input-wrapper').find('.autocomplete-suggestions');
+        if (suggestionsBox.children().length > 0) {
+            suggestionsBox.addClass('show');
+            suggestionsBox.css({
+                'display': 'block',
+                'z-index': '10060',
+                'position': 'absolute'
+            });
         }
     });
 

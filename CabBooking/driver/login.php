@@ -1,95 +1,380 @@
 <?php require_once('./../config.php') ?>
 <!DOCTYPE html>
-<html lang="en" class="" style="height: auto;">
- <?php require_once('inc/header.php') ?>
-<body class="hold-transition login-page">
+<html lang="en">
+<?php require_once('inc/header.php') ?>
+<body class="modern-auth-body">
   <script>
     start_loader()
   </script>
+  
   <style>
-      body{
-          /* width:calc(100%);
-          height:calc(100%);
-          background-image:url('<?= validate_image($_settings->info('cover')) ?>');
-          background-repeat: no-repeat;
-          background-size:cover; */
+  /* Modern Auth Page Styles */
+  .modern-auth-body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+      padding: 2rem 1rem;
+  }
+  
+  .auth-container {
+      width: 100%;
+      max-width: 1100px;
+      background: white;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+      display: flex;
+      min-height: 600px;
+  }
+  
+  .auth-left {
+      flex: 1;
+      background: linear-gradient(135deg, #1e3a8a 0%, #4f46e5 100%);
+      padding: 3rem;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+  }
+  
+  .auth-left::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg width="100" height="100" xmlns="http://www.w3.org/2000/svg"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>');
+      opacity: 0.3;
+      pointer-events: none;
+  }
+  
+  .auth-left-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+  }
+  
+  .auth-logo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      background: white;
+      padding: 10px;
+  }
+  
+  .auth-left h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: white;
+  }
+  
+  .auth-left p {
+      font-size: 1.125rem;
+      opacity: 0.9;
+      line-height: 1.6;
+  }
+  
+  .auth-right {
+      flex: 1;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+  }
+  
+  .auth-header {
+      margin-bottom: 2rem;
+  }
+  
+  .auth-header h2 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.5rem;
+  }
+  
+  .auth-header p {
+      color: #6b7280;
+      font-size: 1rem;
+  }
+  
+  .form-modern-group-auth {
+      margin-bottom: 1.5rem;
+  }
+  
+  .form-modern-group-auth label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.5rem;
+  }
+  
+  .form-input-wrapper {
+      position: relative;
+  }
+  
+  .form-input-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #9ca3af;
+      font-size: 1.125rem;
+  }
+  
+  .form-modern-input-auth {
+      width: 100%;
+      padding: 0.875rem 1rem 0.875rem 3rem;
+      font-size: 1rem;
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      background-color: #f9fafb;
+  }
+  
+  .form-modern-input-auth:focus {
+      outline: none;
+      border-color: #a855f7;
+      background-color: white;
+      box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
+  }
+  
+  .password-toggle-btn {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #9ca3af;
+      cursor: pointer;
+      padding: 0.25rem;
+      transition: color 0.3s ease;
+  }
+  
+  .password-toggle-btn:hover {
+      color: #4f46e5;
+  }
+  
+  .auth-submit-btn {
+      width: 100%;
+      padding: 1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(147, 51, 234, 0.3);
+  }
+  
+  .auth-submit-btn:hover {
+      background: linear-gradient(135deg, #7e22ce 0%, #9333ea 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(147, 51, 234, 0.4);
+  }
+  
+  .auth-submit-btn:active {
+      transform: translateY(0);
+  }
+  
+  .auth-links {
+      margin-top: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+  }
+  
+  .auth-link {
+      color: #9333ea;
+      text-decoration: none;
+      font-weight: 500;
+      transition: color 0.3s ease;
+  }
+  
+  .auth-link:hover {
+      color: #7e22ce;
+  }
+  
+  .auth-divider {
+      margin: 1.5rem 0;
+      text-align: center;
+      position: relative;
+  }
+  
+  .auth-divider span {
+      background: white;
+      padding: 0 1rem;
+      color: #6b7280;
+      font-size: 0.875rem;
+      position: relative;
+      z-index: 1;
+  }
+  
+  .auth-divider::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      height: 1px;
+      background: #e5e7eb;
+  }
+  
+  .auth-alt-action {
+      text-align: center;
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #e5e7eb;
+  }
+  
+  .auth-alt-action p {
+      color: #6b7280;
+      margin: 0;
+  }
+  
+  /* Modern Error Message Styling */
+  .err_msg {
+      border-radius: 12px !important;
+      padding: 1rem !important;
+      margin-bottom: 1.5rem !important;
+      border: none !important;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2) !important;
+  }
+  
+  @media (max-width: 768px) {
+      .auth-container {
+          flex-direction: column;
       }
-      #logo-img{
-          /* width:15em;
-          height:15em; */
-          object-fit:scale-down;
-          object-position:center center;
+      
+      .auth-left {
+          padding: 2rem;
       }
+      
+      .auth-left h1 {
+          font-size: 1.75rem;
+      }
+      
+      .auth-logo {
+          width: 80px;
+          height: 80px;
+      }
+      
+      .auth-right {
+          padding: 2rem;
+      }
+      
+      .auth-header h2 {
+          font-size: 1.5rem;
+      }
+  }
   </style>
-<div class="login-box">
-<?php $page = isset($_GET['page']) ? $_GET['page'] : 'home';  ?>
-     <?php if($_settings->chk_flashdata('success')): ?>
+
+  <div class="auth-container fade-in">
+    <?php $page = isset($_GET['page']) ? $_GET['page'] : 'home';  ?>
+    <?php if($_settings->chk_flashdata('success')): ?>
       <script>
         alert_toast("<?php echo $_settings->flashdata('success') ?>",'success')
       </script>
     <?php endif;?>
-  <!-- /.login-logo -->
-  <center><img src="<?= validate_image($_settings->info('logo')) ?>" alt="System Logo" id="logo-img"></center>
-  <div class="clear-fix my-2"></div>
-  <div class="card card-outline card-purple">
-    <div class="card-header text-center">
-      <a href="./" class="h4 text-decoration-none"><b>Driver Login Panel</b></a>
+    
+    <!-- Left Side - Branding -->
+    <div class="auth-left">
+      <div class="auth-left-content">
+        <img src="<?= validate_image($_settings->info('logo')) ?>" alt="<?= $_settings->info('short_name') ?>" class="auth-logo">
+        <h1><?= $_settings->info('short_name') ?></h1>
+        <p>Driver Portal - Manage your bookings and earn on your schedule.</p>
+      </div>
     </div>
-    <div class="card-body">
+    
+    <!-- Right Side - Login Form -->
+    <div class="auth-right">
+      <div class="auth-header">
+        <h2>Driver Login</h2>
+        <p>Access your driver dashboard</p>
+      </div>
       
       <form id="dlogin-frm" action="" method="post">
-        <div class="input-group mb-3">
-        <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-user"></span>
-            </div>
+        <div class="form-modern-group-auth">
+          <label for="reg_code">Registration Code</label>
+          <div class="form-input-wrapper">
+            <i class="fas fa-id-card form-input-icon"></i>
+            <input type="text" id="reg_code" name="reg_code" class="form-modern-input-auth" placeholder="Enter your registration code" required>
           </div>
-          <input type="text" class="form-control" name="reg_code" placeholder="Reg.Code">
-          
         </div>
-        <div class="input-group mb-3">
-        <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
+        
+        <div class="form-modern-group-auth">
+          <label for="password">Password</label>
+          <div class="form-input-wrapper">
+            <i class="fas fa-lock form-input-icon"></i>
+            <input type="password" id="password" name="password" class="form-modern-input-auth" placeholder="Enter your password" required>
+            <button type="button" class="password-toggle-btn" onclick="togglePassword('password')">
+              <i class="fas fa-eye"></i>
+            </button>
           </div>
-          <input type="password" class="form-control" name="password" placeholder="Password">
-          
         </div>
-        <div class="row align-items-center">
-          <div class="col-8">
-            <a href="<?php echo base_url ?>" style="text-decoration:none;">Back</a>
-          </div>
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-success btn-sm btn-flat btn-block">Log In</button>
-          </div>
-          <!-- /.col -->
+        
+        <button type="submit" class="auth-submit-btn">
+          <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+        </button>
+        
+        <div class="auth-links">
+          <a href="<?php echo base_url ?>" class="auth-link">
+            <i class="fas fa-arrow-left mr-1"></i> Back to Home
+          </a>
+        </div>
+        
+        <div class="auth-alt-action">
+          <p><a href="<?php echo base_url ?>login.php" class="auth-link"><i class="fas fa-user mr-1"></i> Client Login</a></p>
         </div>
       </form>
-      <!-- /.social-auth-links -->
-
-      <!-- <p class="mb-1">
-        <a href="forgot-password.html">I forgot my password</a>
-      </p> -->
-      
     </div>
-    <!-- /.card-body -->
   </div>
-  <!-- /.card -->
-</div>
-<!-- /.login-box -->
+  
+  <script>
+  function togglePassword(inputId) {
+      const input = document.getElementById(inputId);
+      const icon = event.currentTarget.querySelector('i');
+      
+      if (input.type === 'password') {
+          input.type = 'text';
+          icon.classList.remove('fa-eye');
+          icon.classList.add('fa-eye-slash');
+      } else {
+          input.type = 'password';
+          icon.classList.remove('fa-eye-slash');
+          icon.classList.add('fa-eye');
+      }
+  }
+  </script>
 
 <!-- jQuery -->
-<script src="plugins/jquery/jquery.min.js"></script>
+<script src="<?php echo base_url ?>plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
-<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo base_url ?>plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
-<script src="dist/js/adminlte.min.js"></script>
+<script src="<?php echo base_url ?>dist/js/adminlte.min.js"></script>
 
 <script>
   $(document).ready(function(){
     end_loader();
+    
+    // Form submission is handled by dist/js/script.js
+    // The form with id="dlogin-frm" is automatically handled
   })
 </script>
 </body>

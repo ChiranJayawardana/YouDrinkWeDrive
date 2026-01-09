@@ -107,7 +107,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         border-bottom: 2px solid #e2e8f0;
     }
     .section-header i {
-        color: #667eea;
+        color: #9333ea;
         font-size: 1.3rem;
     }
     .section-header h5 {
@@ -129,7 +129,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
     .detail-icon {
         width: 45px;
         height: 45px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         border-radius: 12px;
         display: flex;
         align-items: center;
@@ -186,7 +186,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         color: white;
     }
     .highlight-card {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         border-radius: 15px;
         padding: 25px;
         padding-top: 50px;

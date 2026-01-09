@@ -1,6 +1,6 @@
 <style>
     .bookings-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         padding: 60px 0 40px;
         color: white;
         position: relative;
@@ -54,13 +54,13 @@
         top: 0;
         bottom: 0;
         width: 5px;
-        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(180deg, #9333ea 0%, #a855f7 100%);
         transition: width 0.3s ease;
     }
     .booking-card:hover {
         transform: translateX(5px);
-        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
-        border-color: #667eea;
+        box-shadow: 0 8px 25px rgba(147, 51, 234, 0.15);
+        border-color: #a855f7;
     }
     .booking-card:hover::before {
         width: 8px;
@@ -136,7 +136,7 @@
     .detail-icon {
         width: 40px;
         height: 40px;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         border-radius: 10px;
         display: flex;
         align-items: center;
@@ -170,7 +170,7 @@
         border-top: 1px solid #e2e8f0;
     }
     .btn-view {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         color: white;
         border: none;
         padding: 10px 25px;

@@ -1,6 +1,6 @@
 <style>
     .drivers-hero {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         padding: 80px 0 60px;
         color: white;
         position: relative;
@@ -89,7 +89,7 @@
     .driver-card:hover {
         transform: translateY(-10px);
         box-shadow: 0 15px 35px rgba(66, 82, 151, 0.2);
-        border-color: #667eea;
+        border-color: #a855f7;
     }
     .driver-card:hover::before {
         transform: scaleX(1);
