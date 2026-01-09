@@ -413,44 +413,6 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         </div>
     </div>
     
-    <!-- Driver Information Section -->
-    <div class="detail-section">
-        <div class="section-header">
-            <i class="fas fa-car"></i>
-            <h5>Driver Information</h5>
-        </div>
-        
-        <div class="detail-item">
-            <div class="detail-icon">
-                <i class="fas fa-id-card"></i>
-            </div>
-            <div class="detail-content">
-                <div class="detail-label">Driver Name</div>
-                <div class="detail-value"><?= isset($driver_name) ? htmlspecialchars($driver_name) : "N/A" ?></div>
-            </div>
-        </div>
-        
-        <div class="detail-item">
-            <div class="detail-icon">
-                <i class="fas fa-phone-alt"></i>
-            </div>
-            <div class="detail-content">
-                <div class="detail-label">Driver Contact</div>
-                <div class="detail-value"><?= isset($driver_contact) ? htmlspecialchars($driver_contact) : "N/A" ?></div>
-            </div>
-        </div>
-        
-        <div class="detail-item">
-            <div class="detail-icon">
-                <i class="fas fa-map-marker-alt"></i>
-            </div>
-            <div class="detail-content">
-                <div class="detail-label">Driver Address</div>
-                <div class="detail-value"><?= isset($driver_address) ? htmlspecialchars($driver_address) : "N/A" ?></div>
-            </div>
-        </div>
-    </div>
-    
     <!-- Action Buttons -->
     <div class="action-buttons">
         <?php if(isset($status) && $status == 0): ?>
