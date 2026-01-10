@@ -221,6 +221,7 @@
         <div class="row g-4" id="driver_list">
             <?php 
             // Get available drivers: active (status = 1), not deleted, with valid category, and not currently booked
+            // Order by date_created DESC to show newly added drivers at the top
             $cabs = $conn->query("SELECT c.*, cc.name as category 
                 FROM `driver_list` c 
                 INNER JOIN `category_list` cc ON c.category_id = cc.id AND cc.delete_flag = 0 
@@ -234,7 +235,7 @@
                     AND b.driver_id > 0
                     AND b.status IN (0,1,2)
                 )
-                ORDER BY c.`reg_code`");
+                ORDER BY c.`date_created` DESC, c.`id` DESC");
             
             // Debug: Check if query failed
             if(!$cabs){

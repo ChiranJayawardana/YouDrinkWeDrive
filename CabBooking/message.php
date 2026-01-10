@@ -4,7 +4,7 @@
 if (isset($_POST['text'])) {
     $userMessage = $_POST['text'];
     //$apiKey = 'AIzaSyCPJCGkWxY7TvavyO-lD0SpsMsEy3msL0Q'; // Replace with your actual Gemini API Key
-    $apiKey = 'AIzaSyAZDeFWY8WbqfR-x1p0SnzDww3DC60iPxA'; // Replace with your actual Gemini API Key
+    $apiKey = 'AIzaSyDrUTMmTVAZmE2jfqZhh8kvAqvzoCT2H2g'; // Replace with your actual Gemini API Key
     $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . $apiKey;
 
     $data = [
