@@ -2,19 +2,20 @@
 // Initialize meta array to avoid undefined variable errors
 $meta = array();
 
-// Only load user data if ID is provided in URL
+// Only load user data if ID is provided in URL (for editing)
 if(isset($_GET['id']) && $_GET['id'] > 0){
     $user = $conn->query("SELECT * FROM users where id ='{$_GET['id']}'");
     if($user && $user->num_rows > 0){
         foreach($user->fetch_array() as $k =>$v){
             $meta[$k] = $v;
         }
+    } else {
+        // Invalid user ID provided
+        echo "<script>alert('Invalid user ID'); location.href='./?page=user/list';</script>";
+        exit;
     }
-} else {
-    // If no ID provided, redirect to list or show error
-    echo "<script>alert('Invalid user ID'); location.href='./?page=user/list';</script>";
-    exit;
 }
+// If no ID provided, it's a new user - allow it to proceed
 ?>
 <?php if($_settings->chk_flashdata('success')): ?>
 <script>
