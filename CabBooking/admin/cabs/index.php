@@ -37,7 +37,7 @@
 				<tbody>
 					<?php 
 					$i = 1;
-						$qry = $conn->query("SELECT c.*,cc.name as category from `driver_list` c inner join category_list cc on c.category_id = cc.id where c.delete_flag = 0 order by (c.`reg_code`) asc ");
+						$qry = $conn->query("SELECT c.*,cc.name as category from `driver_list` c inner join category_list cc on c.category_id = cc.id where c.delete_flag = 0 order by c.`date_created` DESC, c.`id` DESC ");
 						while($row = $qry->fetch_assoc()):
 							foreach($row as $k=> $v){
 								$row[$k] = trim(stripslashes($v));

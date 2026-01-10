@@ -34,7 +34,7 @@
 				<tbody>
 					<?php 
 					$i = 1;
-						$qry = $conn->query("SELECT * from `category_list` where delete_flag = 0 order by `name` asc ");
+						$qry = $conn->query("SELECT * from `category_list` where delete_flag = 0 order by `date_created` DESC, `id` DESC ");
 						while($row = $qry->fetch_assoc()):
 					?>
 						<tr>
