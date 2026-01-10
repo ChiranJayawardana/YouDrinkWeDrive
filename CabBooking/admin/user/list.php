@@ -45,7 +45,7 @@
 				<tbody>
 					<?php 
 					$i = 1;
-						$qry = $conn->query("SELECT *,concat(firstname,' ',lastname) as name from `users` where id != '1' and id != '{$_settings->userdata('id')}' and `type` != 3 order by `date_created` DESC, `id` DESC ");
+						$qry = $conn->query("SELECT *,concat(firstname,' ',lastname) as name from `users` where id != '1' and id != '{$_settings->userdata('id')}' and `type` != 3 order by `date_added` DESC, `id` DESC ");
 						while($row = $qry->fetch_assoc()):
 					?>
 						<tr>
