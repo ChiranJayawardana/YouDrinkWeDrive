@@ -473,7 +473,11 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                     dataType: "json",
                     success: function(resp) {
                         if (typeof resp == 'object' && resp.status == 'success') {
-                            location.reload();
+                            // Close modal first, then reload
+                            $('#uni_modal').modal('hide');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 300);
                         } else {
                             alert_toast("An error occurred while updating the booking status.", 'error');
                             end_loader();

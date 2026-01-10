@@ -251,6 +251,9 @@
         <div id="bookings-container">
             <?php 
             $i = 1;
+            // Show all bookings for this driver regardless of status
+            // Status values: 0=Pending, 1=Driver Confirmed, 2=Picked-up, 3=Dropped-off, 4=Cancelled
+            // This ensures drivers can see and update bookings through the full workflow: Pending → Confirmed → Picked-up → Dropped-off
             $qry = $conn->query("SELECT * FROM `booking_list` where driver_id = '{$_settings->userdata('id')}' order by unix_timestamp(date_created) desc");
             $booking_count = 0;
             if($qry->num_rows > 0):
