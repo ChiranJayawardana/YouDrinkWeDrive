@@ -98,6 +98,10 @@ Class Master extends DBConnection {
 					}
 				}
 				$_POST['reg_code'] = $prefix.$code;
+				// Set default status to Active (1) if not provided
+				if(!isset($_POST['status']) || $_POST['status'] === ''){
+					$_POST['status'] = 1;
+				}
 			}
 
 			extract($_POST);

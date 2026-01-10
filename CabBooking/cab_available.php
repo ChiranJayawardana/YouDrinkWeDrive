@@ -220,7 +220,27 @@
     <div class="container">
         <div class="row g-4" id="driver_list">
             <?php 
-            $cabs = $conn->query("SELECT c.*, cc.name as category FROM `driver_list` c inner join category_list cc on c.category_id = cc.id where c.delete_flag = 0 and c.id not in (SELECT driver_id FROM `booking_list` where `status` in (0,1,2)) order by c.`reg_code`");
+            // Get available drivers: active (status = 1), not deleted, with valid category, and not currently booked
+            $cabs = $conn->query("SELECT c.*, cc.name as category 
+                FROM `driver_list` c 
+                INNER JOIN `category_list` cc ON c.category_id = cc.id AND cc.delete_flag = 0 
+                WHERE c.delete_flag = 0 
+                AND (c.status = 1 OR c.status IS NULL)
+                AND NOT EXISTS (
+                    SELECT 1 
+                    FROM `booking_list` b
+                    WHERE b.driver_id = c.id 
+                    AND b.driver_id IS NOT NULL
+                    AND b.driver_id > 0
+                    AND b.status IN (0,1,2)
+                )
+                ORDER BY c.`reg_code`");
+            
+            // Debug: Check if query failed
+            if(!$cabs){
+                error_log("Driver query error: " . $conn->error);
+            }
+            
             $driver_count = 0;
             while($row= $cabs->fetch_assoc()):
                 $driver_count++;
