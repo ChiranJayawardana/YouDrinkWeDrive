@@ -61,17 +61,17 @@
                                 <?php endif; ?>
                             </td>
 							<td align="center">
-								 <button type="button" class="btn btn-flat btn-info btn-sm dropdown-toggle dropdown-icon" data-toggle="dropdown">
-				                  		Action
-				                    <span class="sr-only">Toggle Dropdown</span>
-				                  </button>
-				                  <div class="dropdown-menu" role="menu">
-                                    <a class="dropdown-item" href="?page=cabs/view_cab&id=<?php echo $row['id'] ?>"><span class="fa fa-eye text-dark"></span> View</a>
-				                    <div class="dropdown-divider"></div>
-				                    <a class="dropdown-item" href="?page=cabs/manage_cab&id=<?php echo $row['id'] ?>"><span class="fa fa-edit text-primary"></span> Edit</a>
-				                    <div class="dropdown-divider"></div>
-				                    <a class="dropdown-item delete_data" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>"><span class="fa fa-trash text-danger"></span> Delete</a>
-				                  </div>
+								<div class="btn-group" role="group">
+									<a href="?page=cabs/view_cab&id=<?php echo $row['id'] ?>" class="btn btn-flat btn-sm btn-info" title="View">
+										<i class="fa fa-eye"></i> View
+									</a>
+									<a href="?page=cabs/manage_cab&id=<?php echo $row['id'] ?>" class="btn btn-flat btn-sm btn-primary" title="Edit">
+										<i class="fa fa-edit"></i> Edit
+									</a>
+									<a class="btn btn-flat btn-sm btn-danger delete_data" href="javascript:void(0)" data-id="<?php echo $row['id'] ?>" title="Delete">
+										<i class="fa fa-trash"></i> Delete
+									</a>
+								</div>
 							</td>
 						</tr>
 					<?php endwhile; ?>

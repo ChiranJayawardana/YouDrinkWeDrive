@@ -236,6 +236,34 @@
         .badge-secondary {
             background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
         }
+        /* Inline Action Buttons Styling */
+        .btn-group {
+            display: inline-flex !important;
+            gap: 0.25rem !important;
+        }
+        .btn-group .btn {
+            margin: 0 !important;
+            padding: 0.375rem 0.75rem !important;
+            font-size: 0.875rem !important;
+            white-space: nowrap !important;
+        }
+        .btn-group .btn i {
+            margin-right: 0.25rem;
+        }
+        .btn-group .btn-sm {
+            padding: 0.25rem 0.5rem !important;
+            font-size: 0.8rem !important;
+        }
+        @media (max-width: 768px) {
+            .btn-group {
+                flex-direction: column !important;
+                width: 100% !important;
+            }
+            .btn-group .btn {
+                width: 100% !important;
+                margin-bottom: 0.25rem !important;
+            }
+        }
     </style>
     <!-- Daterange picker -->
     <link rel="stylesheet" href="<?php echo base_url ?>plugins/daterangepicker/daterangepicker.css">
