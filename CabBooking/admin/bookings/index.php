@@ -77,7 +77,7 @@
 		$('.table').dataTable();
 		$('.table').dataTable();
         $('.view_data').click(function(){
-            uni_modal("Booking Details","bookings/view_booking.php?id="+$(this).attr('data-id'))
+            uni_modal("Booking Details","bookings/view_booking.php?id="+$(this).attr('data-id'),'large')
         })
     })
 </script>
