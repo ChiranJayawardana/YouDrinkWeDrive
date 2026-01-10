@@ -115,6 +115,47 @@
             transition: all 0.3s ease !important;
             font-size: 0.95rem !important;
         }
+        .custom-select {
+            padding-right: 2.5rem !important;
+            padding-left: 1rem !important;
+            line-height: 1.5 !important;
+            color: #495057 !important;
+            font-weight: 400 !important;
+            min-height: calc(1.5em + 1.5rem + 4px) !important;
+            appearance: none !important;
+            -webkit-appearance: none !important;
+            -moz-appearance: none !important;
+            width: 100% !important;
+            display: block !important;
+        }
+        .custom-select::-webkit-input-placeholder {
+            color: #6c757d !important;
+        }
+        .custom-select::-moz-placeholder {
+            color: #6c757d !important;
+        }
+        .custom-select:-ms-input-placeholder {
+            color: #6c757d !important;
+        }
+        .custom-select::-ms-expand {
+            display: none !important;
+        }
+        .custom-select option {
+            padding: 0.5rem 1rem !important;
+            line-height: 1.5 !important;
+            color: #495057 !important;
+            background-color: #fff !important;
+            font-size: 0.95rem !important;
+        }
+        .custom-select:not([multiple]):not([size]) {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23343a40' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") !important;
+            background-position: right 0.75rem center !important;
+            background-repeat: no-repeat !important;
+            background-size: 8px 10px !important;
+        }
+        .custom-select:focus:not([multiple]):not([size]) {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%239333ea' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e") !important;
+        }
         .form-control:focus, .custom-select:focus {
             border-color: var(--admin-primary) !important;
             box-shadow: 0 0 0 0.2rem rgba(147, 51, 234, 0.25) !important;
