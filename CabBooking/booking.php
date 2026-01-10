@@ -698,5 +698,48 @@ $(document).ready(function(){
             }
         });
     });
+    
+    // Remove Cancel and Save buttons from booking form modal
+    function removeCancelSaveButtons() {
+        // Check if this is the booking form modal
+        var modalBody = $('#uni_modal .modal-body');
+        if (modalBody.find('#booking-form').length > 0) {
+            // Remove buttons with Cancel or Save text from modal footer
+            $('#uni_modal .modal-footer button').each(function() {
+                var buttonText = $(this).text().trim().toLowerCase();
+                if (buttonText.includes('cancel') || buttonText.includes('save')) {
+                    $(this).remove();
+                }
+            });
+            
+            // Also check for buttons in the modal body (outside the form)
+            $('#uni_modal .modal-body button').each(function() {
+                var buttonText = $(this).text().trim().toLowerCase();
+                var isSubmit = $(this).attr('type') === 'submit' || $(this).hasClass('submit-btn') || $(this).closest('form').length > 0;
+                if (!isSubmit && (buttonText.includes('cancel') || buttonText.includes('save'))) {
+                    // Only remove if it's not the Confirm Booking button
+                    if (!buttonText.includes('confirm') && !buttonText.includes('booking')) {
+                        $(this).remove();
+                    }
+                }
+            });
+            
+            // Remove any buttons after the submit button container
+            $('.submit-btn-container').nextAll('button, .btn').each(function() {
+                var buttonText = $(this).text().trim().toLowerCase();
+                if (buttonText.includes('cancel') || buttonText.includes('save')) {
+                    $(this).remove();
+                }
+            });
+        }
+    }
+    
+    // Remove buttons when modal is shown
+    $(document).on('shown.bs.modal', '#uni_modal', function() {
+        removeCancelSaveButtons();
+        // Also check after a short delay in case buttons are added dynamically
+        setTimeout(removeCancelSaveButtons, 100);
+        setTimeout(removeCancelSaveButtons, 500);
+    });
 });
 </script>
