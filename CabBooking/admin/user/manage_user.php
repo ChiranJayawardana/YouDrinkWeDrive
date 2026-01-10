@@ -45,9 +45,14 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 				</div>
 				<div class="form-group col-6">
 					<label for="password">Password</label>
-					<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" <?php echo isset($meta['id']) ? "": 'required' ?>>
+					<div class="input-group">
+						<input type="password" name="password" id="password" class="form-control" value="" autocomplete="off" <?php echo isset($meta['id']) ? "": 'required' ?>>
+						<div class="input-group-append">
+							<button class="btn btn-outline-default pass_view" type="button" title="Show/Hide Password"><i class="fa fa-eye-slash"></i></button>
+						</div>
+					</div>
                     <?php if(isset($_GET['id'])): ?>
-					<small><i>Leave this blank if you dont want to change the password.</i></small>
+					<small class="text-muted"><i>Leave this blank if you dont want to change the password.</i></small>
                     <?php endif; ?>
 				</div>
 				<div class="form-group col-6">
@@ -102,6 +107,22 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 	    	_this.siblings('.custom-file-label').html("Choose file")
 	    }
 	}
+	
+	// Password visibility toggle
+	$(document).ready(function(){
+		$('.pass_view').click(function(){
+			var group = $(this).closest('.input-group');
+			var input = group.find('input');
+			var type = input.attr('type');
+			if(type == 'password'){
+				input.attr('type','text').focus();
+				$(this).html('<i class="fa fa-eye"></i>');
+			}else{
+				input.attr('type','password').focus();
+				$(this).html('<i class="fa fa-eye-slash"></i>');
+			}
+		});
+	});
 	
 	$('#manage-user').submit(function(e){
 		e.preventDefault();
