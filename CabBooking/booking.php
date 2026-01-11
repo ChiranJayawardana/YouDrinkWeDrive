@@ -160,6 +160,19 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         gap: 20px;
         margin-top: 20px;
     }
+    
+    /* Four column layout for pricing cards */
+    @media (min-width: 992px) {
+        .info-cards[style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+        }
+    }
+    
+    @media (max-width: 991px) and (min-width: 768px) {
+        .info-cards[style*="grid-template-columns: 1fr 1fr 1fr 1fr"] {
+            grid-template-columns: 1fr 1fr;
+        }
+    }
     .info-card {
         background: linear-gradient(135deg, #9333ea 0%, #a855f7 100%);
         border-radius: 15px;
@@ -342,7 +355,7 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                 <span>Pricing Information</span>
             </div>
             
-            <div class="info-cards">
+            <div class="info-cards" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
                 <div class="info-card">
                     <div class="info-card-icon">
                         <i class="fas fa-route"></i>
@@ -353,12 +366,32 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                     <input type="hidden" name="distance" id="distance">
                 </div>
                 
-                <div class="info-card">
+                <div class="info-card" style="background: linear-gradient(135deg, #7c3aed 0%, #9333ea 100%);">
+                    <div class="info-card-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <div class="info-card-label">Estimate Fee</div>
+                    <div class="info-card-value" id="estimate-fee-display">0.00</div>
+                    <div style="font-size: 0.9rem; margin-top: 5px; opacity: 0.8;">LKR</div>
+                    <input type="hidden" name="estimate_fee" id="estimate_fee">
+                </div>
+                
+                <div class="info-card" style="background: linear-gradient(135deg, #0891b2 0%, #06b6d4 100%);">
+                    <div class="info-card-icon">
+                        <i class="fas fa-hands-helping"></i>
+                    </div>
+                    <div class="info-card-label">Supporter Fee</div>
+                    <div class="info-card-value" id="supporter-fee-display">0.00</div>
+                    <div style="font-size: 0.9rem; margin-top: 5px; opacity: 0.8;">LKR</div>
+                    <input type="hidden" name="supporter_fee" id="supporter_fee">
+                </div>
+                
+                <div class="info-card" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%);">
                     <div class="info-card-icon">
                         <i class="fas fa-money-bill-wave"></i>
                     </div>
-                    <div class="info-card-label">Estimated Fee</div>
-                    <div class="info-card-value" id="fee-display">0.00</div>
+                    <div class="info-card-label">Total Estimate Fee</div>
+                    <div class="info-card-value" id="total-fee-display">0.00</div>
                     <div style="font-size: 0.9rem; margin-top: 5px; opacity: 0.8;">LKR</div>
                     <input type="hidden" name="fee" id="fee">
                 </div>
@@ -620,9 +653,18 @@ $(document).ready(function(){
         return distance.toFixed(2); // Return distance in km
     }
 
-    function calculateFee(distance) {
-        const baseRate = 125; // Base rate per km
-        return (distance * baseRate).toFixed(2);
+    function calculateEstimateFee(distance) {
+        const estimateRate = 125; // Estimate fee rate per km
+        return (distance * estimateRate).toFixed(2);
+    }
+    
+    function calculateSupporterFee(distance) {
+        const supporterRate = 75; // Supporter fee rate per km
+        return (distance * supporterRate).toFixed(2);
+    }
+    
+    function calculateTotalFee(estimateFee, supporterFee) {
+        return (parseFloat(estimateFee) + parseFloat(supporterFee)).toFixed(2);
     }
 
     // Handle the selection of a suggested place
@@ -648,15 +690,21 @@ $(document).ready(function(){
 
         if (pickupLat && pickupLon && dropLat && dropLon) {
             const distance = calculateDistance(pickupLat, pickupLon, dropLat, dropLon);
-            const fee = calculateFee(distance);
+            const estimateFee = calculateEstimateFee(distance);
+            const supporterFee = calculateSupporterFee(distance);
+            const totalFee = calculateTotalFee(estimateFee, supporterFee);
             
             // Update hidden inputs for form submission
             $('#distance').val(distance);
-            $('#fee').val(fee);
+            $('#estimate_fee').val(estimateFee);
+            $('#supporter_fee').val(supporterFee);
+            $('#fee').val(totalFee); // Total fee for form submission
             
             // Update display values
             $('#distance-display').text(distance);
-            $('#fee-display').text(fee);
+            $('#estimate-fee-display').text(estimateFee);
+            $('#supporter-fee-display').text(supporterFee);
+            $('#total-fee-display').text(totalFee);
         }
     });
 
@@ -665,7 +713,62 @@ $(document).ready(function(){
         e.preventDefault();
         var _this = $(this);
         $('.err-msg').remove();
+        
+        // Validate that locations have been selected with coordinates
+        const pickupLat = $('#pickup_zone').data('lat');
+        const pickupLon = $('#pickup_zone').data('lon');
+        const dropLat = $('#drop_zone').data('lat');
+        const dropLon = $('#drop_zone').data('lon');
+        const distance = $('#distance').val();
+        const fee = $('#fee').val();
+        
+        // Check if required fields are filled
+        if (!pickupLat || !pickupLon) {
+            var el = $('<div>');
+            el.addClass("alert alert-danger err-msg").text("Please select a valid pickup location from the suggestions.");
+            _this.prepend(el);
+            el.show('slow');
+            $("html, body, .modal-body").animate({ scrollTop: 0 }, "fast");
+            return false;
+        }
+        
+        if (!dropLat || !dropLon) {
+            var el = $('<div>');
+            el.addClass("alert alert-danger err-msg").text("Please select a valid drop-off location from the suggestions.");
+            _this.prepend(el);
+            el.show('slow');
+            $("html, body, .modal-body").animate({ scrollTop: 0 }, "fast");
+            return false;
+        }
+        
+        if (!distance || parseFloat(distance) <= 0) {
+            var el = $('<div>');
+            el.addClass("alert alert-danger err-msg").text("Distance calculation error. Please reselect both locations.");
+            _this.prepend(el);
+            el.show('slow');
+            $("html, body, .modal-body").animate({ scrollTop: 0 }, "fast");
+            return false;
+        }
+        
+        if (!fee || parseFloat(fee) <= 0) {
+            var el = $('<div>');
+            el.addClass("alert alert-danger err-msg").text("Fee calculation error. Please reselect both locations.");
+            _this.prepend(el);
+            el.show('slow');
+            $("html, body, .modal-body").animate({ scrollTop: 0 }, "fast");
+            return false;
+        }
+        
         start_loader();
+        
+        // Log form data for debugging
+        console.log('Submitting booking with:', {
+            pickup: $('#pickup_zone').val(),
+            dropoff: $('#drop_zone').val(),
+            distance: distance,
+            fee: fee
+        });
+        
         $.ajax({
             url: _base_url_ + "classes/Master.php?f=save_booking",
             data: new FormData($(this)[0]),
@@ -676,24 +779,32 @@ $(document).ready(function(){
             type: 'POST',
             dataType: 'json',
             error: err => {
-                console.log(err);
-                alert_toast("An error occurred", 'error');
+                console.log('AJAX Error:', err);
+                alert_toast("An error occurred. Please try again.", 'error');
                 end_loader();
             },
             success: function(resp) {
+                console.log('Server Response:', resp);
                 if (typeof resp == 'object' && resp.status == 'success') {
-                    location.href = './?p=booking_list';
+                    alert_toast("Booking confirmed successfully!", 'success');
+                    setTimeout(function() {
+                        location.href = './?p=booking_list';
+                    }, 1500);
                 } else if (resp.status == 'failed' && !!resp.msg) {
                     var el = $('<div>');
                     el.addClass("alert alert-danger err-msg").text(resp.msg);
                     _this.prepend(el);
                     el.show('slow');
-                    $("html, body").animate({ scrollTop: _this.closest('.card').offset().top }, "fast");
+                    $("html, body, .modal-body").animate({ scrollTop: 0 }, "fast");
                     end_loader();
                 } else {
-                    alert_toast("An error occurred", 'error');
+                    var errorMsg = "An error occurred. Please try again.";
+                    if (resp.err) {
+                        console.error('Database Error:', resp.err);
+                    }
+                    alert_toast(errorMsg, 'error');
                     end_loader();
-                    console.log(resp);
+                    console.log('Response:', resp);
                 }
             }
         });

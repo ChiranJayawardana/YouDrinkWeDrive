@@ -336,11 +336,65 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
         
         <div class="detail-item">
             <div class="detail-icon">
+                <i class="fas fa-route"></i>
+            </div>
+            <div class="detail-content">
+                <div class="detail-label">Distance</div>
+                <div class="detail-value"><?= isset($distance) ? number_format($distance, 2) . " km" : "N/A" ?></div>
+            </div>
+        </div>
+        
+        <div class="detail-item">
+            <div class="detail-icon">
+                <i class="fas fa-car"></i>
+            </div>
+            <div class="detail-content">
+                <div class="detail-label">Estimate Fee (Distance × 160)</div>
+                <div class="detail-value">
+                    <?php 
+                    if(isset($estimate_fee)) {
+                        echo "LKR " . number_format($estimate_fee, 2);
+                    } elseif(isset($distance)) {
+                        $calc_estimate = $distance * 160;
+                        echo "LKR " . number_format($calc_estimate, 2);
+                    } else {
+                        echo "N/A";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-item">
+            <div class="detail-icon">
+                <i class="fas fa-hands-helping"></i>
+            </div>
+            <div class="detail-content">
+                <div class="detail-label">Supporter Fee (Distance × 100)</div>
+                <div class="detail-value">
+                    <?php 
+                    if(isset($supporter_fee)) {
+                        echo "LKR " . number_format($supporter_fee, 2);
+                    } elseif(isset($distance)) {
+                        $calc_supporter = $distance * 100;
+                        echo "LKR " . number_format($calc_supporter, 2);
+                    } else {
+                        echo "N/A";
+                    }
+                    ?>
+                </div>
+            </div>
+        </div>
+        
+        <div class="detail-item" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-radius: 12px; padding: 15px; margin-top: 10px;">
+            <div class="detail-icon" style="color: white;">
                 <i class="fas fa-money-bill-wave"></i>
             </div>
             <div class="detail-content">
-                <div class="detail-label">Fee</div>
-                <div class="detail-value"><?= isset($fee) ? "LKR " . number_format($fee, 2) : "N/A" ?></div>
+                <div class="detail-label" style="color: rgba(255,255,255,0.9); font-weight: 600;">Total Estimate Fee</div>
+                <div class="detail-value" style="color: white; font-size: 1.3rem; font-weight: 700;">
+                    <?= isset($fee) ? "LKR " . number_format($fee, 2) : "N/A" ?>
+                </div>
             </div>
         </div>
         

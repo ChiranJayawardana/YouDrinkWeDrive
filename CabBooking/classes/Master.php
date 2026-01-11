@@ -324,7 +324,8 @@ Class Master extends DBConnection {
 		extract($_POST);
 		$data = "";
 		foreach($_POST as $k =>$v){
-			if(!in_array($k,array('id'))){
+			// Exclude id, estimate_fee, and supporter_fee (these are for display only, not for database)
+			if(!in_array($k,array('id', 'estimate_fee', 'supporter_fee'))){
 				$v = $this->conn->real_escape_string($v);
 				if(!empty($data)) $data .=",";
 				$data .= " `{$k}`='{$v}' ";
@@ -345,7 +346,10 @@ Class Master extends DBConnection {
 				$this->settings->set_flashdata('success'," Booking successfully updated.");
 		}else{
 			$resp['status'] = 'failed';
+			$resp['msg'] = "Failed to save booking. Please try again.";
 			$resp['err'] = $this->conn->error."[{$sql}]";
+			// Log the error for debugging
+			error_log("Booking Save Error: " . $this->conn->error . " | SQL: " . $sql);
 		}
 		return json_encode($resp);
 	}

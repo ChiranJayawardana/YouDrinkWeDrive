@@ -152,12 +152,48 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                         <div class="view-field-value"><?= isset($driver_address) && !empty($driver_address) ? nl2br(htmlspecialchars($driver_address)) : '<span class="empty">Not specified</span>' ?></div>
                     </div>
                     <div class="view-field">
-                        <div class="view-field-label">Booking Fee</div>
+                        <div class="view-field-label">Distance</div>
+                        <div class="view-field-value">
+                            <?= isset($distance) && !empty($distance) ? number_format($distance, 2) . " km" : '<span class="empty">Not specified</span>' ?>
+                        </div>
+                    </div>
+                    <div class="view-field">
+                        <div class="view-field-label">Estimate Fee (Distance × 160)</div>
+                        <div class="view-field-value">
+                            <?php 
+                            if(isset($estimate_fee) && !empty($estimate_fee)) {
+                                echo "<strong style='color: #7c3aed;'>LKR " . number_format($estimate_fee, 2) . "</strong>";
+                            } elseif(isset($distance) && !empty($distance)) {
+                                $calc_estimate = $distance * 160;
+                                echo "<strong style='color: #7c3aed;'>LKR " . number_format($calc_estimate, 2) . "</strong>";
+                            } else {
+                                echo '<span class="empty">Not specified</span>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="view-field">
+                        <div class="view-field-label">Supporter Fee (Distance × 100)</div>
+                        <div class="view-field-value">
+                            <?php 
+                            if(isset($supporter_fee) && !empty($supporter_fee)) {
+                                echo "<strong style='color: #0891b2;'>LKR " . number_format($supporter_fee, 2) . "</strong>";
+                            } elseif(isset($distance) && !empty($distance)) {
+                                $calc_supporter = $distance * 100;
+                                echo "<strong style='color: #0891b2;'>LKR " . number_format($calc_supporter, 2) . "</strong>";
+                            } else {
+                                echo '<span class="empty">Not specified</span>';
+                            }
+                            ?>
+                        </div>
+                    </div>
+                    <div class="view-field" style="background: linear-gradient(135deg, #059669 0%, #10b981 100%); border-radius: 8px; padding: 15px; margin-top: 10px;">
+                        <div class="view-field-label" style="color: rgba(255,255,255,0.9); font-weight: 600; margin-bottom: 8px;">Total Estimate Fee</div>
                         <div class="view-field-value">
                             <?php if(isset($fee) && !empty($fee)): ?>
-                                <strong style="color: #10b981; font-size: 1.1rem;">LKR <?= number_format($fee, 2) ?></strong>
+                                <strong style="color: white; font-size: 1.3rem; font-weight: 700;">LKR <?= number_format($fee, 2) ?></strong>
                             <?php else: ?>
-                                <span class="empty">Not specified</span>
+                                <span style="color: rgba(255,255,255,0.8);">Not specified</span>
                             <?php endif; ?>
                         </div>
                     </div>
