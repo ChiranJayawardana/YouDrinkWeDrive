@@ -158,13 +158,13 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                         </div>
                     </div>
                     <div class="view-field">
-                        <div class="view-field-label">Estimate Fee (Distance × 160)</div>
+                        <div class="view-field-label">Estimate Fee</div>
                         <div class="view-field-value">
                             <?php 
                             if(isset($estimate_fee) && !empty($estimate_fee)) {
                                 echo "<strong style='color: #7c3aed;'>LKR " . number_format($estimate_fee, 2) . "</strong>";
                             } elseif(isset($distance) && !empty($distance)) {
-                                $calc_estimate = $distance * 160;
+                                $calc_estimate = $distance * 125;
                                 echo "<strong style='color: #7c3aed;'>LKR " . number_format($calc_estimate, 2) . "</strong>";
                             } else {
                                 echo '<span class="empty">Not specified</span>';
@@ -173,13 +173,13 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                         </div>
                     </div>
                     <div class="view-field">
-                        <div class="view-field-label">Supporter Fee (Distance × 100)</div>
+                        <div class="view-field-label">Supporter Fee</div>
                         <div class="view-field-value">
                             <?php 
                             if(isset($supporter_fee) && !empty($supporter_fee)) {
                                 echo "<strong style='color: #0891b2;'>LKR " . number_format($supporter_fee, 2) . "</strong>";
                             } elseif(isset($distance) && !empty($distance)) {
-                                $calc_supporter = $distance * 100;
+                                $calc_supporter = $distance * 75;
                                 echo "<strong style='color: #0891b2;'>LKR " . number_format($calc_supporter, 2) . "</strong>";
                             } else {
                                 echo '<span class="empty">Not specified</span>';

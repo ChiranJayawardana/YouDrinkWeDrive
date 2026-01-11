@@ -351,13 +351,13 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                         <i class="fas fa-car"></i>
                     </div>
                     <div class="detail-content">
-                        <div class="detail-label">Estimate Fee (Distance × 160)</div>
+                        <div class="detail-label">Estimate Fee</div>
                         <div class="detail-value">
                             <?php 
                             if(isset($estimate_fee)) {
                                 echo "LKR " . number_format($estimate_fee, 2);
                             } elseif(isset($distance)) {
-                                $calc_estimate = $distance * 160;
+                                $calc_estimate = $distance * 125;
                                 echo "LKR " . number_format($calc_estimate, 2);
                             } else {
                                 echo "N/A";
@@ -372,13 +372,13 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
                         <i class="fas fa-hands-helping"></i>
                     </div>
                     <div class="detail-content">
-                        <div class="detail-label">Supporter Fee (Distance × 100)</div>
+                        <div class="detail-label">Supporter Fee</div>
                         <div class="detail-value">
                             <?php 
                             if(isset($supporter_fee)) {
                                 echo "LKR " . number_format($supporter_fee, 2);
                             } elseif(isset($distance)) {
-                                $calc_supporter = $distance * 100;
+                                $calc_supporter = $distance * 75;
                                 echo "LKR " . number_format($calc_supporter, 2);
                             } else {
                                 echo "N/A";
