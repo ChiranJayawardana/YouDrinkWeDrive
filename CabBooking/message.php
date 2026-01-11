@@ -10,7 +10,41 @@ if (isset($_POST['text'])) {
         exit;
     }
     
-    $apiKey = 'AIzaSyDrUTMmTVAZmE2jfqZhh8kvAqvzoCT2H2g'; // Replace with your actual Gemini API Key
+    // Load environment variables from .env file
+    $envFile = __DIR__ . '/.env';
+    
+    if (!file_exists($envFile)) {
+        echo "Configuration error: .env file not found. Please contact support.";
+        exit;
+    }
+    
+    $envContent = file_get_contents($envFile);
+    $lines = explode("\n", $envContent);
+    
+    foreach ($lines as $line) {
+        $line = trim($line);
+        // Skip empty lines and comments
+        if (empty($line) || strpos($line, '#') === 0) {
+            continue;
+        }
+        
+        // Parse key=value pairs
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            $key = trim($key);
+            $value = trim($value);
+            $_ENV[$key] = $value;
+            putenv("$key=$value");
+        }
+    }
+    
+    // Get API key from environment variable
+    $apiKey = isset($_ENV['GEMINI_API_KEY']) ? $_ENV['GEMINI_API_KEY'] : '';
+    
+    if (empty($apiKey)) {
+        echo "Configuration error: API key not found in .env file. Please contact support.";
+        exit;
+    }
     $apiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=' . $apiKey;
 
     // System prompt to restrict responses to cab booking system only

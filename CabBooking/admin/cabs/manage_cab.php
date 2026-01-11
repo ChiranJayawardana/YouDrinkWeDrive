@@ -63,28 +63,31 @@ if(isset($_GET['id']) && $_GET['id'] > 0){
 					</div>
 				</div>
 				<small class="text-muted"><i>Leave this field blank if you don't wish to update the driver's account password.</i></small>
-			</div>
-			<div class="row">
-				<div class="form-group col-md-6">
-					<label for="" class="control-label">Driver's Image</label>
-					<div class="custom-file">
-					  <input type="file" class="custom-file-input rounded-circle" id="customFile" name="img" onchange="displayDriverImg(this,$(this))" accept="image/*">
-					  <label class="custom-file-label" for="customFile">Choose file</label>
-					</div>
-				</div>
-				<div class="form-group col-md-6 d-flex justify-content-center">
-					<?php 
-						// Construct the image path properly
-						$image_display = '';
-						if(isset($image_path) && !empty($image_path)){
-							$image_display = validate_image($image_path);
-						} else {
-							$image_display = base_url.'dist/img/no-image-available.png';
-						}
-					?>
-					<img src="<?php echo $image_display ?>" alt="Driver Image" id="cimg" class="img-fluid img-thumbnail" onerror="this.src='<?php echo base_url ?>dist/img/no-image-available.png'">
+		</div>
+		<!-- Image Upload Section Hidden -->
+		<?php /*
+		<div class="row">
+			<div class="form-group col-md-6">
+				<label for="" class="control-label">Driver's Image</label>
+				<div class="custom-file">
+				  <input type="file" class="custom-file-input rounded-circle" id="customFile" name="img" onchange="displayDriverImg(this,$(this))" accept="image/*">
+				  <label class="custom-file-label" for="customFile">Choose file</label>
 				</div>
 			</div>
+			<div class="form-group col-md-6 d-flex justify-content-center">
+				<?php 
+					// Construct the image path properly
+					$image_display = '';
+					if(isset($image_path) && !empty($image_path)){
+						$image_display = validate_image($image_path);
+					} else {
+						$image_display = base_url.'dist/img/no-image-available.png';
+					}
+				?>
+				<img src="<?php echo $image_display ?>" alt="Driver Image" id="cimg" class="img-fluid img-thumbnail" onerror="this.src='<?php echo base_url ?>dist/img/no-image-available.png'">
+			</div>
+		</div>
+		*/ ?>
             <div class="form-group">
 				<label for="status" class="control-label">Status</label>
                 <select name="status" id="status" class="custom-select selevt">

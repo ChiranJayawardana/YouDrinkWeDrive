@@ -274,6 +274,8 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
                     </div>
                 </div>
                 
+                <!-- Image Upload Section Hidden -->
+                <?php /*
                 <div class="modern-form-group">
                     <label>Profile Avatar</label>
                     <div class="avatar-section">
@@ -306,6 +308,7 @@ if($_settings->userdata('id') > 0 && $_settings->userdata('login_type') == 3){
                         </div>
                     </div>
                 </div>
+                */ ?>
                 
                 <div class="modern-form-group" style="margin-top: 30px;">
                     <button type="submit" class="btn-submit">

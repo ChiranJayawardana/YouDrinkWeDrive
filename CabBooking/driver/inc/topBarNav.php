@@ -118,15 +118,9 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Enhanced User Avatar */
+/* Enhanced User Avatar - Hidden */
 img#user_avatar {
-    width: 2.75rem;
-    height: 2.75rem;
-    object-fit: cover;
-    object-position: center center;
-    border: 3px solid white !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    transition: all 0.3s ease;
+    display: none !important; /* Avatar image hidden */
 }
 
 .dropdown-toggle {
@@ -143,9 +137,16 @@ img#user_avatar {
     background-color: rgba(255, 255, 255, 0.15);
 }
 
-.dropdown-toggle:hover img#user_avatar {
-    transform: scale(1.05);
-    border-color: rgba(255, 255, 255, 1);
+.dropdown-toggle .user-greeting {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.dropdown-toggle .user-greeting i {
+    font-size: 1.2rem;
 }
 
 /* Enhanced Dropdown Menu */
@@ -286,8 +287,12 @@ img#user_avatar {
             <div class="d-flex align-items-center ms-lg-3">
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="<?= validate_image($_settings->userdata('image_path')) ?>" alt="user_avatar" id="user_avatar" class="rounded-circle">
-                        <span class="ml-2">Hello, <?= $_settings->userdata('cab_driver') ?></span>
+                        <!-- Avatar Image Hidden -->
+                        <!-- <img src="<?= validate_image($_settings->userdata('image_path')) ?>" alt="user_avatar" id="user_avatar" class="rounded-circle"> -->
+                        <span class="user-greeting">
+                            <i class="fas fa-user-circle"></i>
+                            Hello, <?= $_settings->userdata('driver_name') ?>
+                        </span>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="./?p=manage_account">
